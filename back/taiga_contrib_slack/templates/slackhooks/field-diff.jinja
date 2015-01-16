@@ -1,0 +1,38 @@
+{% if field_name == "points" %}
+    {% for role, points in values.items() %}
+        *{{ role }} role points:* from *{{ points.0 }}* to *{{ points.1 }}*
+    {% endfor %}
+{% elif field_name == "attachments" %}
+    {% if values.new %}
+        {% for att in values['new']%}
+            *{{ _("Added new attachment") }}:* <{{ att.url }}|{{ att.filename }}> {% if att.description %}{{ att.description }}{% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if values.changed %}
+        {% for att in values['changed'] %}
+            *{{ _("Updated attachment") }}:* <{{ att.url }}|{{ att.filename }}> {% if att.changes.is_deprecated %} {% if att.changes.is_deprecated.1 %}_deprecated_{% else %}_not deprecated_{% endif %}{% endif %}{% if att.changes.description %}{{ att.changes.description.1 }}{% endif %}
+        {% endfor %}
+    {% endif %}
+    {% if values.deleted %}
+        {% for att in values['deleted']%}
+            *{{ _("Deleted attachment") }}:* {{ att.filename }}
+        {% endfor %}
+    {% endif %}
+{% elif field_name in ["tags", "watchers"] %}
+    *{{ field_name }}:* from *{{ ', '.join(values.0) }} * to *{{ ', '.join(values.1) }} *
+{% elif field_name == "description" %}
+    *Description from:*
+    {{ values.0 }}
+    *to*
+    {{ values.1 }}
+{% elif field_name == "content" %}
+    *Content from*:
+    {{ values.0 }}
+    *to*:
+    {{ values.1 }}
+{% elif field_name == "assigned_to" %}
+    *assigned_to:* from {% if values.0 != None and values.0 != "" %}*{{ values.0 }}*{% else %}*{{ _("Unassigned") }}*{% endif %} to {% if values.1 != None and values.1 != "" %}{{ values.1 }}*{% else %}*{{ _("Unassigned") }}*{% endif %}
+{% else %}
+    *{{ field_name }}:* from *{{ values.0 }}* to *{{ values.1 }}*
+{% endif %}
