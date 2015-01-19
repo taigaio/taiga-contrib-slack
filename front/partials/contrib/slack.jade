@@ -1,0 +1,21 @@
+block head
+    title Taiga  Your agile, free, and open source project management tool
+
+block content
+    div.wrapper.roles(contrib-slack-webhooks, ng-controller="ContribSlackAdminController as ctrl",
+                            ng-init="section='admin'")
+        sidebar.menu-secondary.sidebar(tg-admin-navigation="contrib")
+            include ../views/modules/admin-menu
+        sidebar.menu-tertiary.sidebar(tg-admin-navigation="contrib-slack")
+            include ../views/modules/admin-submenu-contrib
+
+        section.main.admin-common.admin-contrib
+            include ../views/components/mainTitle
+
+            form
+                fieldset
+                    label(for="url") Slack webhook url
+                    input(type="text", name="url", ng-model="slackhook.url", placeholder="Slack webhook url", id="url")
+
+                button(type="submit", class="hidden")
+                a.button.button-green.submit-button(href="", title="Save", ng-click="ctrl.updateOrCreateHook(slackhook)") Save

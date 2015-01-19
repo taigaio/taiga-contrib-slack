@@ -21,6 +21,10 @@ from . import signal_handlers as handlers
 from .api import SlackHookViewSet
 from taiga.projects.history.models import HistoryEntry
 
+# Register route
+from taiga.contrib_routers import router
+router.register(r"slack", SlackHookViewSet, base_name="slack")
+
 
 def connect_taiga_contrib_slack_signals():
     signals.post_save.connect(handlers.on_new_history_entry, sender=HistoryEntry, dispatch_uid="taiga_contrib_slack")
@@ -36,9 +40,4 @@ class TaigaContribSlackAppConfig(AppConfig):
 
     def ready(self):
         connect_taiga_contrib_slack_signals()
-
-        # Register route
-        from taiga.routers import router
-        router.register(r"slack", SlackHookViewSet, base_name="slack")
-
 
