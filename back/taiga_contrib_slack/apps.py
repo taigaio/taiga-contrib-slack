@@ -20,24 +20,25 @@ from django.db.models import signals
 from . import signal_handlers as handlers
 from .api import SlackHookViewSet
 from taiga.projects.history.models import HistoryEntry
-from taiga.routers import router
 
 
-# Register route
-router.register(r"slackhooks", SlackHookViewSet, base_name="slackhooks")
+def connect_taiga_contrib_slack_signals():
+    signals.post_save.connect(handlers.on_new_history_entry, sender=HistoryEntry, dispatch_uid="taiga_contrib_slack")
 
 
-def connect_slackhooks_signals():
-    signals.post_save.connect(handlers.on_new_history_entry, sender=HistoryEntry, dispatch_uid="slackhooks")
+def disconnect_taiga_contrib_slack_signals():
+    signals.post_save.disconnect(dispatch_uid="taiga_contrib_slack")
 
 
-def disconnect_slackhooks_signals():
-    signals.post_save.disconnect(dispatch_uid="slackhooks")
-
-
-class SlackHooksAppConfig(AppConfig):
-    name = "contrib.slackhooks"
-    verbose_name = "SlackHooks App Config"
+class TaigaContribSlackAppConfig(AppConfig):
+    name = "taiga_contrib_slack"
+    verbose_name = "Taiga contrib slack App Config"
 
     def ready(self):
-        connect_slackhooks_signals()
+        connect_taiga_contrib_slack_signals()
+
+        # Register route
+        from taiga.routers import router
+        router.register(r"slack", SlackHookViewSet, base_name="slack")
+
+

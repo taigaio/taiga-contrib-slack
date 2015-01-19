@@ -53,7 +53,7 @@ def on_new_history_entry(sender, instance, created, **kwargs):
         extra_args = []
 
     for slackhook in slackhooks:
-        args = [slackhook["id"], slackhook["url"], obj] + extra_args
+        args = [slackhook["url"], obj] + extra_args
 
         if settings.CELERY_ENABLED:
             task.delay(*args)

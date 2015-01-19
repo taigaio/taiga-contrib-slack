@@ -16,7 +16,6 @@
 
 import requests
 
-from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.template import loader, Context
 
@@ -32,7 +31,7 @@ def _get_type(obj):
     return content_type.split(".")[1]
 
 
-def _send_request(slackhook_id, url, data):
+def _send_request(url, data):
     data["username"] = getattr(settings, "SLACKHOOKS_USERNAME", "Taiga")
     data["icon_url"] = getattr(settings, "SLACKHOOKS_ICON", "https://tree.taiga.io/images/favicon.png")
 
@@ -163,10 +162,10 @@ def _field_to_attachment(template_field, field_name, values):
     return attachment
 
 @app.task
-def change_slackhook(slackhook_id, url, obj, change):
+def change_slackhook(url, obj, change):
     obj_type = _get_type(obj)
 
-    template_change = loader.get_template('slackhooks/change.jinja')
+    template_change = loader.get_template('taiga_contrib_slack/change.jinja')
     context = Context({ "obj": obj, "obj_type": obj_type, "change": change })
 
     change_text = template_change.render(context)
@@ -175,7 +174,7 @@ def change_slackhook(slackhook_id, url, obj, change):
 
     # Get description and content
     if change.diff:
-        template_field = loader.get_template('slackhooks/field-diff.jinja')
+        template_field = loader.get_template('taiga_contrib_slack/field-diff.jinja')
         included_fields = ["description", "content"]
 
         for field_name, values in change.diff.items():
@@ -185,7 +184,7 @@ def change_slackhook(slackhook_id, url, obj, change):
                 data['attachments'].append(attachment)
 
     if change.values_diff:
-        template_field = loader.get_template('slackhooks/field-diff.jinja')
+        template_field = loader.get_template('taiga_contrib_slack/field-diff.jinja')
         excluded_fields = ["description_diff", "description_html", "content_diff",
                            "content_html", "backlog_order", "kanban_order",
                            "taskboard_order", "us_order", "finish_date",
@@ -200,14 +199,14 @@ def change_slackhook(slackhook_id, url, obj, change):
             if attachment:
                 data['attachments'].append(attachment)
 
-    _send_request(slackhook_id, url, data)
+    _send_request(url, data)
 
 
 @app.task
-def create_slackhook(slackhook_id, url, obj):
+def create_slackhook(url, obj):
     obj_type = _get_type(obj)
 
-    template = loader.get_template('slackhooks/create.jinja')
+    template = loader.get_template('taiga_contrib_slack/create.jinja')
     context = Context({ "obj": obj, "obj_type": obj_type })
 
     data = {
@@ -226,14 +225,14 @@ def create_slackhook(slackhook_id, url, obj):
         }]
     }
 
-    _send_request(slackhook_id, url, data)
+    _send_request(url, data)
 
 
 @app.task
-def delete_slackhook(slackhook_id, url, obj):
+def delete_slackhook(url, obj):
     obj_type = _get_type(obj)
 
-    template = loader.get_template('slackhooks/delete.jinja')
+    template = loader.get_template('taiga_contrib_slack/delete.jinja')
     context = Context({ "obj": obj, "obj_type": obj_type })
 
     data = {
@@ -248,13 +247,13 @@ def delete_slackhook(slackhook_id, url, obj):
         }]
     }
 
-    _send_request(slackhook_id, url, data)
+    _send_request(url, data)
 
 
 @app.task
-def test_slackhook(slackhook_id, url):
+def test_slackhook(url):
     data = {
-        "text": _("Test slack message"),
+        "text": "Test slack message",
     }
 
-    _send_request(slackhook_id, url, data)
+    _send_request(url, data)
