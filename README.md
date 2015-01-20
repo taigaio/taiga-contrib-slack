@@ -17,7 +17,7 @@ In your Taiga back python virtualenv install the pip package `taiga-contrib-slac
 Modify your settings/local.py and include the line:
 
 ```python
-  INSTALLED_APPS += "taiga_contrib_slack"
+  INSTALLED_APPS += ["taiga_contrib_slack"]
 ```
 
 The run the migrations to generate the new need table:
