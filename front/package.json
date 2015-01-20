@@ -1,0 +1,30 @@
+{
+  "name": "taiga-contrib-slack",
+  "version": "0.0.1",
+  "description": "Taiga contrib plugin for slack integration",
+  "main": "index.js",
+  "scripts": {
+    "build-jade": "node_modules/jade/bin/jade.js partials/contrib/slack.jade -o dist/",
+    "build-coffee": "cat coffee/slack.coffee dist/slack.html | node_modules/coffee-script/bin/coffee --compile --stdio > dist/slack.js",
+    "build": "npm run build-jade; npm run build-coffee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/taigaio/taiga-contrib-slack"
+  },
+  "keywords": [
+    "slack",
+    "taiga",
+    "integration"
+  ],
+  "author": "Jesús Espino <jesus.espino@kaleidos.net>",
+  "license": "AGPL",
+  "bugs": {
+    "url": "https://github.com/taigaio/taiga-contrib-slack/issues"
+  },
+  "homepage": "https://github.com/taigaio/taiga-contrib-slack",
+  "dependencies": {
+    "coffee-script": "^1.8.0",
+    "jade": "^1.9.1"
+  }
+}

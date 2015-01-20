@@ -1,3 +1,5 @@
+|module.run(['$templateCache', ($templateCache) ->
+|  $templateCache.put('contrib/slack', '''
 div(tg-slack-webhooks, ng-controller="ContribSlackAdminController as ctrl")
     header
         h1(tg-main-title)
@@ -9,3 +11,4 @@ div(tg-slack-webhooks, ng-controller="ContribSlackAdminController as ctrl")
 
         button(type="submit", class="hidden")
         a.button.button-green.submit-button(href="", title="Save", ng-click="ctrl.updateOrCreateHook(slackhook)") Save
+|''')]);

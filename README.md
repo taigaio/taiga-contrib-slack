@@ -1,8 +1,6 @@
 Taiga contrib slack
 ===================
 
-**WARNING:** Not usable yet, currently in development.
-
 The Taiga plugin for slack integration.
 
 Installation
@@ -30,16 +28,15 @@ The run the migrations to generate the new need table:
 
 ### Taiga Front
 
-In your Taiga front directory install the bower package `taiga-contrib-slack` with:
+Download in your `dist/js/` directory of Taiga front the `taiga-contrib-slack` compiled code:
 
 ```bash
-  bower install taiga-contrib-slack
+  cd dist/js
+  wget "https://raw.githubusercontent.com/taigaio/taiga-contrib-slack/stable/front/dist/slack.js"
 ```
 
-Configure your contrib packages in `????-ToDo-????`.
+Include the file in the `dist/index.html` file between the `libs.js` and `apps.js` with this line:
 
-Recompile the taiga-front contrib code with:
-
-```bash
-  gulp contrib
+```html
+  <script src="/js/slack.js"></script>
 ```
