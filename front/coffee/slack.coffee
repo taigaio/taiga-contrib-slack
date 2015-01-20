@@ -4,8 +4,6 @@ slackInfo = {
     slug: "slack"
     name: "Slack"
     type: "admin"
-    adminController: "ContribSlackAdmin"
-    adminPartial: "contrib/slack/admin.html"
     module: 'taigaContrib.slack'
 }
 
@@ -25,45 +23,26 @@ class SlackAdmin
     @.$inject = [
         "$rootScope",
         "$scope",
-        "$tgModel",
         "$tgRepo",
-        "$tgResources"
-        "$routeParams",
-        "$appTitle"
+        "$appTitle",
+        "$tgConfirm",
     ]
 
-    constructor: (@rootScope, @scope, @model, @repo, @rs, @params, @appTitle, @confirm) ->
+    constructor: (@rootScope, @scope, @repo, @appTitle, @confirm) ->
         @scope.sectionName = "Slack" #i18n
-        @scope.project = {}
-        @scope.adminPlugins = _.filter(@rootScope.contribPlugins, (plugin) -> plugin.type == "admin")
+        @scope.sectionSlug = "slack" #i18n
 
-        promise = @.loadInitialData()
+        @scope.$on "project:loaded", =>
+            promise = @repo.queryMany("slack", {project: @scope.projectId})
 
-        promise.then () =>
-            @appTitle.set("Slack - " + @scope.project.name)
+            promise.then (slackhooks) =>
+                @scope.slackhook = {project: @scope.projectId}
+                if slackhooks.length > 0
+                    @scope.slackhook = slackhooks[0]
+                @appTitle.set("Slack - " + @scope.project.name)
 
-        promise.then null, ->
-            @confirm.notify("error")
-
-    loadSlackHooks: ->
-        return @repo.queryMany("slack", {project: @scope.projectId}).then (slackhooks) =>
-            @scope.slackhook = {project: @scope.projectId}
-            if slackhooks.length > 0
-                @scope.slackhook = slackhooks[0]
-
-    loadProject: ->
-        return @rs.projects.get(@scope.projectId).then (project) =>
-            @scope.project = project
-            @scope.$emit('project:loaded', project)
-            return project
-
-    loadInitialData: ->
-        promise = @repo.resolve({pslug: @params.pslug}).then (data) =>
-            @scope.projectId = data.project
-            return data
-
-        return promise.then(=> @.loadProject())
-                      .then(=> @.loadSlackHooks())
+            promise.then null, =>
+                @confirm.notify("error")
 
 module.controller("ContribSlackAdminController", SlackAdmin)
 
