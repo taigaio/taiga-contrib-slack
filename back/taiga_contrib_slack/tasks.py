@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import requests
+import logging
 
 from django.conf import settings
 from django.template import loader, Context
@@ -24,6 +25,9 @@ from rest_framework.renderers import UnicodeJSONRenderer
 
 from taiga.base.utils.db import get_typename_for_model_instance
 from taiga.celery import app
+
+
+logger = logging.getLogger(__name__)
 
 
 def _get_type(obj):
@@ -36,7 +40,16 @@ def _send_request(url, data):
     data["icon_url"] = getattr(settings, "SLACKHOOKS_ICON", "https://tree.taiga.io/images/favicon.png")
 
     serialized_data = UnicodeJSONRenderer().render(data)
-    requests.post(url, data=serialized_data)
+
+    if settings.CELERY_ENABLED:
+        requests.post(url, data=serialized_data)
+        return
+
+    try:
+        requests.post(url, data=serialized_data)
+    except Exception:
+        logger.error("Error sending request to slack")
+
 
 def _desc_or_content_to_attachment(template_field, field_name, values):
     attachment = {
