@@ -115,7 +115,7 @@
 
   module.run([
     '$templateCache', function($templateCache) {
-      return $templateCache.put('contrib/slack', '<div tg-slack-webhooks="tg-slack-webhooks" ng-controller="ContribSlackAdminController as ctrl"><header><h1 tg-main-title="tg-main-title"></h1></header><form><fieldset><label for="url">Slack webhook url</label><input type="text" name="url" ng-model="slackhook.url" placeholder="Slack webhook url" id="url"/></fieldset><button type="submit" class="hidden"></button><a href="" title="Save" ng-click="ctrl.updateOrCreateHook(slackhook)" class="button button-green submit-button">Save</a></form></div>');
+      return $templateCache.put('contrib/slack', '<div contrib-slack-webhooks="contrib-slack-webhooks" ng-controller="ContribSlackAdminController as ctrl"><header><h1 tg-main-title="tg-main-title"></h1></header><form><fieldset><label for="url">Slack webhook url</label><input type="text" name="url" ng-model="slackhook.url" placeholder="Slack webhook url" id="url"/></fieldset><button type="submit" class="hidden"></button><a href="" title="Save" ng-click="ctrl.updateOrCreateHook(slackhook)" class="button button-green submit-button">Save</a></form></div>');
     }
   ]);
 
