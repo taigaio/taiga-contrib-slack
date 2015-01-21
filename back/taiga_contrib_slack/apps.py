@@ -40,4 +40,3 @@ class TaigaContribSlackAppConfig(AppConfig):
 
     def ready(self):
         connect_taiga_contrib_slack_signals()
-

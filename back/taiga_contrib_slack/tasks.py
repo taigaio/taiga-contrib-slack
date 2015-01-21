@@ -56,7 +56,7 @@ def _desc_or_content_to_attachment(template_field, field_name, values):
         "color": "warning",
         "mrkdwn_in": ["fields", "title", "fallback"]
     }
-    context = Context({"field_name": field_name, "values": values })
+    context = Context({"field_name": field_name, "values": values})
     change_field_text = template_field.render(context)
 
     attachment['fallback'] = change_field_text.strip()
@@ -76,12 +76,13 @@ def _desc_or_content_to_attachment(template_field, field_name, values):
     ]
     return attachment
 
+
 def _field_to_attachment(template_field, field_name, values):
     attachment = {
         "color": "warning",
         "mrkdwn_in": ["fields", "title", "fallback"]
     }
-    context = Context({"field_name": field_name, "values": values })
+    context = Context({"field_name": field_name, "values": values})
     change_field_text = template_field.render(context)
 
     attachment['fallback'] = change_field_text.strip()
@@ -125,13 +126,19 @@ def _field_to_attachment(template_field, field_name, values):
                 if att.get('changes', {}).get('is_deprecated', None):
                     attachment['fields'].append({
                         "title": "Deprecated",
-                        "value": "*From* {} *to* {}".format(att["changes"]["is_deprecated"][0], att["changes"]["is_deprecated"][1]),
+                        "value": "*From* {} *to* {}".format(
+                            att["changes"]["is_deprecated"][0],
+                            att["changes"]["is_deprecated"][1]
+                        ),
                         "short": False,
                     })
                 if att.get('changes', {}).get('description', None):
                     attachment['fields'].append({
                         "title": "Description",
-                        "value": "*From:*\n{}\n*to*:\n{}".format(att["changes"]["description"][0], att["changes"]["description"][1]),
+                        "value": "*From:*\n{}\n*to*:\n{}".format(
+                            att["changes"]["description"][0],
+                            att["changes"]["description"][1]
+                        ),
                         "short": False,
                     })
         if values['deleted']:
@@ -152,10 +159,10 @@ def _field_to_attachment(template_field, field_name, values):
         ]
     elif field_name == "assigned_to":
         from_value = "Unassigned"
-        if values[0] != None and values[0] != "":
+        if values[0] is not None and values[0] != "":
             from_value = values[0]
         to_value = "Unassigned"
-        if values[1] != None and values[1] != "":
+        if values[1] is not None and values[1] != "":
             to_value = values[1]
         attachment['fields'] = [
             {
@@ -174,15 +181,16 @@ def _field_to_attachment(template_field, field_name, values):
         ]
     return attachment
 
+
 @app.task
 def change_slackhook(url, obj, change):
     obj_type = _get_type(obj)
 
     template_change = loader.get_template('taiga_contrib_slack/change.jinja')
-    context = Context({ "obj": obj, "obj_type": obj_type, "change": change })
+    context = Context({"obj": obj, "obj_type": obj_type, "change": change})
 
     change_text = template_change.render(context)
-    data = { "text": change_text.strip() }
+    data = {"text": change_text.strip()}
     data['attachments'] = []
 
     # Get description and content
@@ -220,7 +228,7 @@ def create_slackhook(url, obj):
     obj_type = _get_type(obj)
 
     template = loader.get_template('taiga_contrib_slack/create.jinja')
-    context = Context({ "obj": obj, "obj_type": obj_type })
+    context = Context({"obj": obj, "obj_type": obj_type})
 
     data = {
         "text": template.render(context),
@@ -246,7 +254,7 @@ def delete_slackhook(url, obj):
     obj_type = _get_type(obj)
 
     template = loader.get_template('taiga_contrib_slack/delete.jinja')
-    context = Context({ "obj": obj, "obj_type": obj_type })
+    context = Context({"obj": obj, "obj_type": obj_type})
 
     data = {
         "text": template.render(context),
