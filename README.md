@@ -35,8 +35,10 @@ Download in your `dist/js/` directory of Taiga front the `taiga-contrib-slack` c
   wget "https://raw.githubusercontent.com/taigaio/taiga-contrib-slack/stable/front/dist/slack.js"
 ```
 
-Include the file in the `dist/index.html` file between the `libs.js` and `apps.js` with this line:
+Include in your dist/js/conf.json in the contribPlugins list the value `"/js/slack.js"`:
 
-```html
-  <script src="/js/slack.js"></script>
+```json
+...
+    "contribPlugins": ["/js/slack.js"]
+...
 ```
