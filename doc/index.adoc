@@ -1,0 +1,176 @@
+Taiga Contrib Slack REST API
+============================
+:toc: left
+:numbered:
+:source-highlighter: pygments
+:pygments-style: friendly
+
+Endpoints summary
+-----------------
+
+[cols="3*", options="header"]
+|===
+| URL
+| Method
+| Functionality
+
+| /api/v1/slack
+| GET
+| link:#slack-list[List slack endpoints]
+
+| /api/v1/slack
+| POST
+| link:#slack-create[Create slack endpoint]
+
+| /api/v1/slack/<slackId>
+| GET
+| link:#slack-get[Get slack endpoint]
+
+| /api/v1/slack/<slackId>
+| PUT
+| link:#slack-edit[Modify slack endpoint]
+
+| /api/v1/slack/<slackId>
+| PATCH
+| link:#slack-edit[Modify partially an slack endpoint]
+
+| /api/v1/slack/<slackId>
+| DELETE
+| link:#slack-delete[Delete an slack endpoint]
+
+| /api/v1/slack/<slackId>/test
+| POST
+| link:#slack-test[Test slack endpoint]
+
+|===
+
+Endpoints
+---------
+
+[[slack-list]]
+=== List
+
+To list slack endpoint send a GET request with the following parameters:
+
+[source,bash]
+----
+curl -X GET \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ${AUTH_TOKEN}" \
+  https://api.taiga.io/api/v1/slack
+----
+
+The HTTP response is a 200 OK and the response body is a JSON list of link:#object-slack-endpoint-detail[slack endpoint detail objects]
+
+The results can be filtered using the following parameters:
+
+- *project*: project id
+
+[source,bash]
+----
+curl -X GET \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ${AUTH_TOKEN}" \
+  https://api.taiga.io/api/v1/slack?project=1
+----
+
+[[slack-create]]
+=== Create
+
+To create slack endpoint send a POST request with the following data:
+
+- *project* (required): project id
+- *url* (required): payload url
+
+[source,bash]
+----
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ${AUTH_TOKEN}" \
+  -d '{
+          "project": 1,
+          "url": "http://slack.com/slack"
+      }' \
+  https://api.taiga.io/api/v1/slack
+----
+
+When the creation is successful, the HTTP response is a 201 Created and the response body is a JSON link:#object-slack-endpoint-detail[slack endpoint detail object]
+
+[[slack-get]]
+=== Get
+
+To get a slack endpoint send a GET request specifying the slack endpoint id in the url
+
+[source,bash]
+----
+curl -X GET \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ${AUTH_TOKEN}" \
+  https://api.taiga.io/api/v1/slack/1
+----
+
+The HTTP response is a 200 OK and the response body is a JSON link:#object-slack-endpoint-detail[slack endpoint detail object]
+
+[[slack-edit]]
+=== Edit
+
+To edit a slack endpoint send a PUT or a PATCH specifying the slack endpoint id in the url.
+In a PATCH request you just need to send the modified data, in a PUT one the whole object must be sent.
+
+[source,bash]
+----
+curl -X PATCH \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ${AUTH_TOKEN}" \
+  -d '{
+          "name": "My service name"
+      }' \
+  https://api.taiga.io/api/v1/slack/1
+----
+
+When the creation is successful, the HTTP response is a 200 OK and the response body is a JSON link:#object-slack-endpoint-detail[slack endpoint detail object]
+
+[[slack-delete]]
+=== Delete
+
+To delete a slack endpoint send a DELETE specifying the slack endpoint id in the url
+
+[source,bash]
+----
+curl -X DELETE \
+  -H "Authorization: Bearer ${AUTH_TOKEN}" \
+  https://api.taiga.io/api/v1/slack/1
+----
+
+When delete succeeded, the HTTP response is a 204 NO CONTENT with an empty body response
+
+[[slack-test]]
+=== Test
+
+To test a slack endpoint send a POST request specifying the slack endpoint id in the url
+
+[source,bash]
+----
+curl -X GET \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ${AUTH_TOKEN}" \
+  https://api.taiga.io/api/v1/slack/1/test
+----
+
+The HTTP response is a 204 NO CONTENT.
+
+[[object-slack-endpoint-detail]]
+Slack endpoint object
+---------------------
+
+[source,json]
+----
+{
+    "logs_counter": 6,
+    "id": 1,
+    "project": 1,
+    "name": "webhook",
+    "url": "http://localhost:8080/test",
+    "key": "123"
+}
+----
