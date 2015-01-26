@@ -166,11 +166,8 @@ Slack endpoint object
 [source,json]
 ----
 {
-    "logs_counter": 6,
     "id": 1,
     "project": 1,
-    "name": "webhook",
-    "url": "http://localhost:8080/test",
-    "key": "123"
+    "url": "https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX"
 }
 ----
