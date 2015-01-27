@@ -82,12 +82,25 @@
             return;
           }
           $loading.start(submitButton);
-          if ($scope.slackhook.id) {
-            promise = $repo.save($scope.slackhook);
-          } else {
+          if (!$scope.slackhook.id) {
             promise = $repo.create("slack", $scope.slackhook);
+            promise.then(function(data) {
+              return $scope.slackhook = data;
+            });
+          } else if ($scope.slackhook.url) {
+            promise = $repo.save($scope.slackhook);
+            promise.then(function(data) {
+              return $scope.slackhook = data;
+            });
+          } else {
+            promise = $repo.remove($scope.slackhook);
+            promise.then(function(data) {
+              return $scope.slackhook = {
+                project: $scope.projectId
+              };
+            });
           }
-          promise.then(function() {
+          promise.then(function(data) {
             $loading.finish(submitButton);
             return $confirm.notify("success");
           });

@@ -56,11 +56,20 @@ SlackWebhooksDirective = ($repo, $confirm, $loading) ->
 
             $loading.start(submitButton)
 
-            if $scope.slackhook.id
-                promise = $repo.save($scope.slackhook)
-            else
+            if not $scope.slackhook.id
                 promise = $repo.create("slack", $scope.slackhook)
-            promise.then ->
+                promise.then (data) ->
+                    $scope.slackhook = data
+            else if $scope.slackhook.url
+                promise = $repo.save($scope.slackhook)
+                promise.then (data) ->
+                    $scope.slackhook = data
+            else
+                promise = $repo.remove($scope.slackhook)
+                promise.then (data) ->
+                    $scope.slackhook = {project: $scope.projectId}
+
+            promise.then (data)->
                 $loading.finish(submitButton)
                 $confirm.notify("success")
 
