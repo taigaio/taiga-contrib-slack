@@ -229,6 +229,7 @@ def create_slackhook(url, obj):
 
     template = loader.get_template('taiga_contrib_slack/create.jinja')
     context = Context({"obj": obj, "obj_type": obj_type})
+    description = getattr(obj, 'description', '-')
 
     data = {
         "text": template.render(context),
@@ -240,7 +241,7 @@ def create_slackhook(url, obj):
                 "short": True,
             }, {
                 "title": "Description",
-                "value": obj.description,
+                "value": description,
                 "short": False,
             }]
         }]
@@ -255,6 +256,7 @@ def delete_slackhook(url, obj):
 
     template = loader.get_template('taiga_contrib_slack/delete.jinja')
     context = Context({"obj": obj, "obj_type": obj_type})
+    description = getattr(obj, 'description', '-')
 
     data = {
         "text": template.render(context),
@@ -262,7 +264,7 @@ def delete_slackhook(url, obj):
             "color": "danger",
             "fields": [{
                 "title": "Description",
-                "value": obj.description,
+                "value": description,
                 "short": False,
             }]
         }]
