@@ -37,6 +37,6 @@ class SlackHookViewSet(ModelCrudViewSet):
         slackhook = self.get_object()
         self.check_permissions(request, 'test', slackhook)
 
-        tasks.test_slackhook(slackhook.id, slackhook.url)
+        tasks.test_slackhook(slackhook.url)
 
         return response.NoContent()
