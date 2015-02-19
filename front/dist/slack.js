@@ -29,14 +29,15 @@
   };
 
   SlackAdmin = (function() {
-    SlackAdmin.$inject = ["$rootScope", "$scope", "$tgRepo", "$appTitle", "$tgConfirm"];
+    SlackAdmin.$inject = ["$rootScope", "$scope", "$tgRepo", "$appTitle", "$tgConfirm", "$tgHttp"];
 
-    function SlackAdmin(rootScope, scope, repo, appTitle, confirm) {
+    function SlackAdmin(rootScope, scope, repo, appTitle, confirm, http) {
       this.rootScope = rootScope;
       this.scope = scope;
       this.repo = repo;
       this.appTitle = appTitle;
       this.confirm = confirm;
+      this.http = http;
       this.scope.sectionName = "Slack";
       this.scope.sectionSlug = "slack";
       this.scope.$on("project:loaded", (function(_this) {
@@ -60,6 +61,21 @@
         };
       })(this));
     }
+
+    SlackAdmin.prototype.testHook = function() {
+      var promise;
+      promise = this.http.post(this.repo.resolveUrlForModel(this.scope.slackhook) + '/test');
+      promise.success((function(_this) {
+        return function(_data, _status) {
+          return _this.confirm.notify("success");
+        };
+      })(this));
+      return promise.error((function(_this) {
+        return function(data, status) {
+          return _this.confirm.notify("error");
+        };
+      })(this));
+    };
 
     return SlackAdmin;
 
@@ -128,7 +144,7 @@
 
   module.run([
     '$templateCache', function($templateCache) {
-      return $templateCache.put('contrib/slack', '<div contrib-slack-webhooks="contrib-slack-webhooks" ng-controller="ContribSlackAdminController as ctrl"><header><h1 tg-main-title="tg-main-title"></h1></header><form><label for="url">Slack webhook url</label><div class="contrib-form-wrapper"><fieldset class="contrib-input"><input type="text" name="url" ng-model="slackhook.url" placeholder="Slack webhook url" id="url" data-type="url"/></fieldset><fieldset class="contrib-test"><a href="" title="Test" ng-show="slackhook.id" ng-click="ctrl.testHook()" class="button-gray"><span>Test</span></a></fieldset></div><button type="submit" class="hidden"></button><a href="" title="Save" ng-click="ctrl.updateOrCreateHook(slackhook)" class="button-green submit-button"><span>Save</span></a></form><a href="https://taiga.io/support/slack-integration/" target="_blank" class="help-button"><span class="icon icon-help"></span><span>Do you need help? Check out our support page!</span></a></div>');
+      return $templateCache.put('contrib/slack', '<div contrib-slack-webhooks="contrib-slack-webhooks" ng-controller="ContribSlackAdminController as ctrl"><header><h1 tg-main-title="tg-main-title"></h1></header><form><label for="url">Slack webhook url</label><div class="contrib-form-wrapper"><fieldset class="contrib-input"><input type="text" name="url" ng-model="slackhook.url" placeholder="Slack webhook url" id="url" data-type="url"/></fieldset><fieldset class="contrib-test"><a href="" title="Test" ng-show="slackhook.id" ng-click="ctrl.testHook()" class="button-gray"><span>Test</span></a></fieldset></div><button type="submit" class="hidden"></button><a href="" title="Save" ng-click="ctrl.updateOrCreateHook(slackhook)" class="button-green submit-button"><span>Save</span></a></form><a href="" title="Test" ng-show="slackhook.id" ng-click="ctrl.testHook()" class="button button-green">Test</a><a href="https://taiga.io/support/slack-integration/" target="_blank" class="help-button"><span class="icon icon-help"></span><span>Do you need help? Check out our support page!</span></a></div>');
     }
   ]);
 

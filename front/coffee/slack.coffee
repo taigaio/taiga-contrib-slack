@@ -26,9 +26,10 @@ class SlackAdmin
         "$tgRepo",
         "$appTitle",
         "$tgConfirm",
+        "$tgHttp",
     ]
 
-    constructor: (@rootScope, @scope, @repo, @appTitle, @confirm) ->
+    constructor: (@rootScope, @scope, @repo, @appTitle, @confirm, @http) ->
         @scope.sectionName = "Slack" #i18n
         @scope.sectionSlug = "slack" #i18n
 
@@ -43,6 +44,13 @@ class SlackAdmin
 
             promise.then null, =>
                 @confirm.notify("error")
+
+    testHook: () ->
+        promise = @http.post(@repo.resolveUrlForModel(@scope.slackhook) + '/test')
+        promise.success (_data, _status) =>
+            @confirm.notify("success")
+        promise.error (data, status) =>
+            @confirm.notify("error")
 
 module.controller("ContribSlackAdminController", SlackAdmin)
 
