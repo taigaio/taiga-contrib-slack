@@ -20,7 +20,7 @@ Modify your settings/local.py and include the line:
   INSTALLED_APPS += ["taiga_contrib_slack"]
 ```
 
-The run the migrations to generate the new need table:
+Then run the migrations to generate the new need table:
 
 ```bash
   python manage.py migrate taiga_contrib_slack
