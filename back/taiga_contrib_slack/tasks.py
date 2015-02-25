@@ -171,6 +171,30 @@ def _field_to_attachment(template_field, field_name, values):
                 "short": True,
             },
         ]
+    elif field_name == "custom_attributes":
+        attachment['fields'] = []
+        if values['new']:
+            for att in values['new']:
+                attachment['fields'].append({
+                    "title": att["name"],
+                    "value": "*to* {}".format(att["value"]),
+                    "short": False,
+                })
+        if values['changed']:
+            for att in values['changed']:
+                attachment['fields'].append({
+                    "title": att["name"],
+                    "value": "*from* {} *to* {}".format(att["changes"]["value"][0], att["changes"]["value"][1]),
+                    "short": False,
+                })
+
+        if values['deleted']:
+            for att in values['deleted']:
+                attachment['fields'].append({
+                    "title": att["name"],
+                    "value": "deleted",
+                    "short": True,
+                })
     else:
         attachment['fields'] = [
             {
