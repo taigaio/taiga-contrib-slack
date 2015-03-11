@@ -8,7 +8,6 @@
             *{{ _("Added new attachment") }}:* <{{ att.url }}|{{ att.filename }}> {% if att.description %}{{ att.description }}{% endif %}
         {% endfor %}
     {% endif %}
-
     {% if values.changed %}
         {% for att in values['changed'] %}
             *{{ _("Updated attachment") }}:* <{{ att.url }}|{{ att.filename }}> {% if att.changes.is_deprecated %} {% if att.changes.is_deprecated.1 %}_deprecated_{% else %}_not deprecated_{% endif %}{% endif %}{% if att.changes.description %}{{ att.changes.description.1 }}{% endif %}
@@ -33,6 +32,22 @@
     {{ values.1 }}
 {% elif field_name == "assigned_to" %}
     *assigned_to:* from {% if values.0 != None and values.0 != "" %}*{{ values.0 }}*{% else %}*{{ _("Unassigned") }}*{% endif %} to {% if values.1 != None and values.1 != "" %}{{ values.1 }}*{% else %}*{{ _("Unassigned") }}*{% endif %}
+{% elif field_name == "custom_attributes" %}
+    {% if values.new %}
+        {% for att in values.new %}
+            *{{ att.name }}:* to *{{ att.value }}*
+        {% endfor %}
+    {% endif %}
+    {% if values.changed %}
+        {% for att in values.changed %}
+            *{{ att.name }}:* from *{{ att.changes.value.0 }}* to *{{ att.changes.value.1 }}*
+        {% endfor %}
+    {% endif %}
+    {% if values.deleted %}
+        {% for att in values.deleted %}
+            *{{ att.name }}:* _{{ _("deleted") }}_
+        {% endfor %}
+    {% endif %}
 {% else %}
     *{{ field_name }}:* from *{{ values.0 }}* to *{{ values.1 }}*
 {% endif %}

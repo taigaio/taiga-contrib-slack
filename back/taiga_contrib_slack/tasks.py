@@ -171,6 +171,30 @@ def _field_to_attachment(template_field, field_name, values):
                 "short": True,
             },
         ]
+    elif field_name == "custom_attributes":
+        attachment['fields'] = []
+        if values['new']:
+            for att in values['new']:
+                attachment['fields'].append({
+                    "title": att["name"],
+                    "value": "*to* {}".format(att["value"]),
+                    "short": False,
+                })
+        if values['changed']:
+            for att in values['changed']:
+                attachment['fields'].append({
+                    "title": att["name"],
+                    "value": "*from* {} *to* {}".format(att["changes"]["value"][0], att["changes"]["value"][1]),
+                    "short": False,
+                })
+
+        if values['deleted']:
+            for att in values['deleted']:
+                attachment['fields'].append({
+                    "title": att["name"],
+                    "value": "deleted",
+                    "short": True,
+                })
     else:
         attachment['fields'] = [
             {
@@ -229,6 +253,7 @@ def create_slackhook(url, obj):
 
     template = loader.get_template('taiga_contrib_slack/create.jinja')
     context = Context({"obj": obj, "obj_type": obj_type})
+    description = getattr(obj, 'description', '-')
 
     data = {
         "text": template.render(context),
@@ -240,7 +265,7 @@ def create_slackhook(url, obj):
                 "short": True,
             }, {
                 "title": "Description",
-                "value": obj.description,
+                "value": description,
                 "short": False,
             }]
         }]
@@ -255,6 +280,7 @@ def delete_slackhook(url, obj):
 
     template = loader.get_template('taiga_contrib_slack/delete.jinja')
     context = Context({"obj": obj, "obj_type": obj_type})
+    description = getattr(obj, 'description', '-')
 
     data = {
         "text": template.render(context),
@@ -262,7 +288,7 @@ def delete_slackhook(url, obj):
             "color": "danger",
             "fields": [{
                 "title": "Description",
-                "value": obj.description,
+                "value": description,
                 "short": False,
             }]
         }]

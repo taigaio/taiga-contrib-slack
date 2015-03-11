@@ -1,6 +1,9 @@
 Taiga contrib slack
 ===================
 
+![Kaleidos Project](http://kaleidos.net/static/img/badge.png "Kaleidos Project")
+[![Managed with Taiga.io](https://taiga.io/media/support/attachments/article-22/banner-gh.png)](https://taiga.io "Managed with Taiga.io")
+
 The Taiga plugin for slack integration.
 
 Installation
@@ -20,7 +23,7 @@ Modify your settings/local.py and include the line:
   INSTALLED_APPS += ["taiga_contrib_slack"]
 ```
 
-The run the migrations to generate the new need table:
+Then run the migrations to generate the new need table:
 
 ```bash
   python manage.py migrate taiga_contrib_slack
