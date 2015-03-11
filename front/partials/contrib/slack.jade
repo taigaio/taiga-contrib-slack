@@ -9,8 +9,8 @@ div(contrib-slack-webhooks, ng-controller="ContribSlackAdminController as ctrl")
         div.contrib-form-wrapper
             fieldset.contrib-input
                 input(type="text", name="url", ng-model="slackhook.url", placeholder="Slack webhook url", id="url", data-type="url")
-            fieldset.contrib-test
-                a.button-gray(href="", title="Test", ng-show="slackhook.id" ng-click="ctrl.testHook()")
+            fieldset.contrib-test(ng-show="slackhook.id")
+                a.button-gray(href="", title="Test", ng-click="ctrl.testHook()")
                     span Test
 
         button(type="submit", class="hidden")
