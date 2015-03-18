@@ -20,16 +20,14 @@
     {% endif %}
 {% elif field_name in ["tags", "watchers"] %}
     *{{ field_name }}:* from *{{ ', '.join(values.0) }} * to *{{ ', '.join(values.1) }} *
-{% elif field_name == "description" %}
-    *Description from:*
+{% elif field_name in ["description", "content", "blocked_note"] %}
+    *{{ field_name.replace("_", " ") }}*
+    {% if values.0 %}
+    *from*:
     {{ values.0 }}
-    *to*
-    {{ values.1 }}
-{% elif field_name == "content" %}
-    *Content from*:
-    {{ values.0 }}
+    {% endif %}
     *to*:
-    {{ values.1 }}
+    {{ values.1 or "empty" }}
 {% elif field_name == "assigned_to" %}
     *assigned_to:* from {% if values.0 != None and values.0 != "" %}*{{ values.0 }}*{% else %}*{{ _("Unassigned") }}*{% endif %} to {% if values.1 != None and values.1 != "" %}{{ values.1 }}*{% else %}*{{ _("Unassigned") }}*{% endif %}
 {% elif field_name == "custom_attributes" %}
@@ -49,5 +47,5 @@
         {% endfor %}
     {% endif %}
 {% else %}
-    *{{ field_name }}:* from *{{ values.0 }}* to *{{ values.1 }}*
+    *{{ field_name.replace("_", " ") }}:* from *{{ values.0 }}* to *{{ values.1 }}*
 {% endif %}
