@@ -9,7 +9,7 @@ The Taiga plugin for slack integration.
 Installation
 ------------
 
-### Taiga Back
+#### Taiga Back
 
 In your Taiga back python virtualenv install the pip package `taiga-contrib-slack` with:
 
@@ -29,7 +29,7 @@ Then run the migrations to generate the new need table:
   python manage.py migrate taiga_contrib_slack
 ```
 
-### Taiga Front
+#### Taiga Front
 
 Download in your `dist/js/` directory of Taiga front the `taiga-contrib-slack` compiled code:
 
