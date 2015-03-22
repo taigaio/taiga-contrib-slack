@@ -45,3 +45,8 @@ Include in your dist/js/conf.json in the contribPlugins list the value `"/js/sla
     "contribPlugins": ["/js/slack.js"]
 ...
 ```
+
+How to use
+----------
+
+Follow the instructions on our support page [Taiga.io Support > Contrib Plugins > Slack integration](https://taiga.io/support/slack-integration/ "Taiga.io Support > Contrib Plugins > Slack integration")
