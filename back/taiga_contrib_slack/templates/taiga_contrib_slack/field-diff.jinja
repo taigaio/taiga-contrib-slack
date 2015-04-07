@@ -19,7 +19,7 @@
         {% endfor %}
     {% endif %}
 {% elif field_name in ["tags", "watchers"] %}
-    *{{ field_name }}:* from *{{ ', '.join(values.0) if values.0 is not None else "None" }} * to *{{ ', '.join(values.1) if values.1 is not None else "None" }} *
+    *{{ field_name }}:* from *{{ ', '.join(values.0) if values.0 is not none else "None" }} * to *{{ ', '.join(values.1) if values.1 is not none else "None" }} *
 {% elif field_name == "description" %}
     *Description from:*
     {{ values.0 }}
