@@ -153,7 +153,8 @@ def _field_to_attachment(template_field, field_name, values):
         attachment['fields'] = [
             {
                 "title": field_name,
-                "value": "*From* {} *to* {}".format(", ".join(values[0]), ", ".join(values[1])),
+                "value": "*From* {} *to* {}".format(", ".join(values[0]) if values[0] is not None else "None",
+                                                    ", ".join(values[1]) if values[1] is not None else "None"),
                 "short": True,
             },
         ]
