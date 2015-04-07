@@ -51,7 +51,7 @@ def _send_request(url, data):
         logger.error("Error sending request to slack")
 
 
-def _desc_or_content_to_attachment(template_field, field_name, values):
+def _markdown_field_to_attachment(template_field, field_name, values):
     attachment = {
         "color": "warning",
         "mrkdwn_in": ["fields", "title", "fallback"]
@@ -60,20 +60,21 @@ def _desc_or_content_to_attachment(template_field, field_name, values):
     change_field_text = template_field.render(context)
 
     attachment['fallback'] = change_field_text.strip()
-    attachment['title'] = field_name
+    attachment['title'] = field_name.replace("_", " ")
 
-    attachment['fields'] = [
-        {
-            "title": "From".format(field_name),
+    attachment['fields'] = []
+    if values[0] and values[1]:
+        attachment['fields'].append({
+            "title": "from",
             "value": values[0],
             "short": False,
-        },
-        {
-            "title": "To".format(field_name),
-            "value": values[1],
-            "short": False,
-        },
-    ]
+        })
+    attachment['fields'].append({
+        "title": "to",
+        "value": values[1] if values[1] else "empty",
+        "short": False,
+    })
+
     return attachment
 
 
@@ -96,7 +97,7 @@ def _field_to_attachment(template_field, field_name, values):
                 "short": True,
             })
     elif field_name == "subject":
-        attachment['title'] = "Subject"
+        attachment['title'] = "subject"
         attachment['fields'] = [{
             "title": "From",
             "value": values[0],
@@ -125,7 +126,7 @@ def _field_to_attachment(template_field, field_name, values):
 
                 if att.get('changes', {}).get('is_deprecated', None):
                     attachment['fields'].append({
-                        "title": "Deprecated",
+                        "title": "deprecated",
                         "value": "*From* {} *to* {}".format(
                             att["changes"]["is_deprecated"][0],
                             att["changes"]["is_deprecated"][1]
@@ -134,7 +135,7 @@ def _field_to_attachment(template_field, field_name, values):
                     })
                 if att.get('changes', {}).get('description', None):
                     attachment['fields'].append({
-                        "title": "Description",
+                        "title": "description",
                         "value": "*From:*\n{}\n*to*:\n{}".format(
                             att["changes"]["description"][0],
                             att["changes"]["description"][1]
@@ -166,7 +167,7 @@ def _field_to_attachment(template_field, field_name, values):
             to_value = values[1]
         attachment['fields'] = [
             {
-                "title": "Assigned to",
+                "title": "assigned to",
                 "value": "*From* {} *to* {}".format(from_value, to_value),
                 "short": True,
             },
@@ -195,10 +196,18 @@ def _field_to_attachment(template_field, field_name, values):
                     "value": "deleted",
                     "short": True,
                 })
+    elif field_name == "is_blocked":
+        attachment['fields'] = [
+            {
+                "title": "is blocked",
+                "value": "*to* {}".format(values[1]),
+                "short": True,
+            },
+        ]
     else:
         attachment['fields'] = [
             {
-                "title": field_name,
+                "title": field_name.replace("_", " "),
                 "value": "*From* {} *to* {}".format(values[0], values[1]),
                 "short": True,
             },
@@ -217,23 +226,24 @@ def change_slackhook(url, obj, change):
     data = {"text": change_text.strip()}
     data['attachments'] = []
 
-    # Get description and content
+    # Get markdown fields
     if change.diff:
         template_field = loader.get_template('taiga_contrib_slack/field-diff.jinja')
-        included_fields = ["description", "content"]
+        included_fields = ["description", "content", "blocked_note"]
 
         for field_name, values in change.diff.items():
             if field_name in included_fields:
-                attachment = _desc_or_content_to_attachment(template_field, field_name, values)
+                attachment = _markdown_field_to_attachment(template_field, field_name, values)
 
                 data['attachments'].append(attachment)
 
+    # Get rest of fields
     if change.values_diff:
         template_field = loader.get_template('taiga_contrib_slack/field-diff.jinja')
         excluded_fields = ["description_diff", "description_html", "content_diff",
-                           "content_html", "backlog_order", "kanban_order",
-                           "taskboard_order", "us_order", "finish_date",
-                           "is_closed"]
+                           "content_html", "blocked_note_diff", "blocked_note_html",
+                           "backlog_order", "kanban_order", "taskboard_order", "us_order",
+                           "finish_date", "is_closed"]
 
         for field_name, values in change.values_diff.items():
             if field_name in excluded_fields:
