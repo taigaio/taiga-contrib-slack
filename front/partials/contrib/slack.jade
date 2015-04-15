@@ -12,6 +12,10 @@ div(contrib-slack-webhooks, ng-controller="ContribSlackAdminController as ctrl")
             fieldset.contrib-test(ng-show="slackhook.id")
                 a.button-gray(href="", title="Test", ng-click="ctrl.testHook()")
                     span Test
+        label(for="channel") Slack webhook channel
+        div.contrib-form-wrapper
+            fieldset.contrib-input
+                input(type="text", name="channel", ng-model="slackhook.channel", placeholder="#slackchannel", id="channel")
 
         button(type="submit", class="hidden")
         a.button-green.submit-button(href="", title="Save", ng-click="ctrl.updateOrCreateHook(slackhook)")
