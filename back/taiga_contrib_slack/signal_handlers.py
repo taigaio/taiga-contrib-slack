@@ -28,6 +28,7 @@ def _get_project_slackhooks(project):
         slackhooks.append({
             "id": slackhook.pk,
             "url": slackhook.url,
+            "channel": slackhook.channel
         })
     return slackhooks
 
@@ -53,7 +54,7 @@ def on_new_history_entry(sender, instance, created, **kwargs):
         extra_args = []
 
     for slackhook in slackhooks:
-        args = [slackhook["url"], obj] + extra_args
+        args = [slackhook["url"], slackhook["channel"], obj] + extra_args
 
         if settings.CELERY_ENABLED:
             task.delay(*args)
