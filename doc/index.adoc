@@ -81,6 +81,7 @@ To create slack endpoint send a POST request with the following data:
 
 - *project* (required): project id
 - *url* (required): payload url
+- *channel* (optional): the slack channel
 
 [source,bash]
 ----
@@ -90,6 +91,7 @@ curl -X POST \
   -d '{
           "project": 1,
           "url": "http://slack.com/slack"
+          "channel": "#slackchannel"
       }' \
   https://api.taiga.io/api/v1/slack
 ----
@@ -169,5 +171,6 @@ Slack endpoint object
     "id": 1,
     "project": 1,
     "url": "https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX"
+    "channel": "#slackchannel"
 }
 ----
