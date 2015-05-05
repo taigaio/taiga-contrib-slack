@@ -2,7 +2,11 @@
 |  $templateCache.put('contrib/slack', '''
 div(contrib-slack-webhooks, ng-controller="ContribSlackAdminController as ctrl")
     header
-        h1(tg-main-title)
+        h1
+            span.project-name
+                | {{::project.name}}
+            span.green
+                | {{::sectionName}}
 
     form
         label(for="url") Slack webhook url
