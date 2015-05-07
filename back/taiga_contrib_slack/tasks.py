@@ -272,13 +272,15 @@ def create_slackhook(url, obj):
                 "title": "Creator",
                 "value": obj.owner.get_full_name(),
                 "short": True,
-            }, {
-                "title": "Description",
-                "value": description,
-                "short": False,
             }]
         }]
     }
+    if description:
+        data["attachments"][0]["fields"].append({
+            "title": "Description",
+            "value": description,
+            "short": False,
+        })
 
     _send_request(url, data)
 
