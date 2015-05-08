@@ -215,7 +215,7 @@ def _field_to_attachment(template_field, field_name, values):
 
 
 @app.task
-def change_slackhook(url, obj, change):
+def change_slackhook(url, channel, obj, change):
     obj_type = _get_type(obj)
 
     template_change = loader.get_template('taiga_contrib_slack/change.jinja')
@@ -224,6 +224,9 @@ def change_slackhook(url, obj, change):
     change_text = template_change.render(context)
     data = {"text": change_text.strip()}
     data['attachments'] = []
+
+    if channel:
+        data["channel"] = channel
 
     # Get markdown fields
     if change.diff:
@@ -257,7 +260,7 @@ def change_slackhook(url, obj, change):
 
 
 @app.task
-def create_slackhook(url, obj):
+def create_slackhook(url, channel, obj):
     obj_type = _get_type(obj)
 
     template = loader.get_template('taiga_contrib_slack/create.jinja')
@@ -282,11 +285,14 @@ def create_slackhook(url, obj):
             "short": False,
         })
 
+    if channel:
+        data["channel"] = channel
+
     _send_request(url, data)
 
 
 @app.task
-def delete_slackhook(url, obj):
+def delete_slackhook(url, channel, obj):
     obj_type = _get_type(obj)
 
     template = loader.get_template('taiga_contrib_slack/delete.jinja')
@@ -305,13 +311,20 @@ def delete_slackhook(url, obj):
         }]
     }
 
+    if channel:
+        data["channel"] = channel
+
     _send_request(url, data)
 
 
 @app.task
-def test_slackhook(url):
+def test_slackhook(url, channel):
     data = {
         "text": "Test slack message",
+
     }
+
+    if channel:
+        data["channel"] = channel
 
     _send_request(url, data)
