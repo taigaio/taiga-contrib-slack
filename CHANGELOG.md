@@ -1,7 +1,7 @@
 # Changelog #
 
 
-## 0.0.6 (unreleased)
+## 0.0.6 (2015-05-21)
 - Add compatibility with taiga >= 1.7.
 
 
