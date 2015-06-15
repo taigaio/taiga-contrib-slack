@@ -29,13 +29,13 @@
   };
 
   SlackAdmin = (function() {
-    SlackAdmin.$inject = ["$rootScope", "$scope", "$tgRepo", "$appTitle", "$tgConfirm", "$tgHttp"];
+    SlackAdmin.$inject = ["$rootScope", "$scope", "$tgRepo", "tgAppMetaService", "$tgConfirm", "$tgHttp"];
 
-    function SlackAdmin(rootScope, scope, repo, appTitle, confirm, http) {
+    function SlackAdmin(rootScope, scope, repo, appMetaService, confirm, http) {
       this.rootScope = rootScope;
       this.scope = scope;
       this.repo = repo;
-      this.appTitle = appTitle;
+      this.appMetaService = appMetaService;
       this.confirm = confirm;
       this.http = http;
       this.scope.sectionName = "Slack";
@@ -47,13 +47,16 @@
             project: _this.scope.projectId
           });
           promise.then(function(slackhooks) {
+            var description, title;
             _this.scope.slackhook = {
               project: _this.scope.projectId
             };
             if (slackhooks.length > 0) {
               _this.scope.slackhook = slackhooks[0];
             }
-            return _this.appTitle.set("Slack - " + _this.scope.project.name);
+            title = _this.scope.sectionName + " - Plugins - " + _this.scope.project.name;
+            description = _this.scope.project.description;
+            return _this.appMetaService.setAll(title, description);
           });
           return promise.then(null, function() {
             return _this.confirm.notify("error");

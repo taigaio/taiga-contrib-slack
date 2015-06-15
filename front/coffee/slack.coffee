@@ -24,14 +24,14 @@ class SlackAdmin
         "$rootScope",
         "$scope",
         "$tgRepo",
-        "$appTitle",
+        "tgAppMetaService",
         "$tgConfirm",
         "$tgHttp",
     ]
 
-    constructor: (@rootScope, @scope, @repo, @appTitle, @confirm, @http) ->
-        @scope.sectionName = "Slack" #i18n
-        @scope.sectionSlug = "slack" #i18n
+    constructor: (@rootScope, @scope, @repo, @appMetaService, @confirm, @http) ->
+        @scope.sectionName = "Slack" # i18n
+        @scope.sectionSlug = "slack"
 
         @scope.$on "project:loaded", =>
             promise = @repo.queryMany("slack", {project: @scope.projectId})
@@ -40,7 +40,10 @@ class SlackAdmin
                 @scope.slackhook = {project: @scope.projectId}
                 if slackhooks.length > 0
                     @scope.slackhook = slackhooks[0]
-                @appTitle.set("Slack - " + @scope.project.name)
+
+                title = "#{@scope.sectionName} - Plugins - #{@scope.project.name}" # i18n
+                description = @scope.project.description
+                @appMetaService.setAll(title, description)
 
             promise.then null, =>
                 @confirm.notify("error")
