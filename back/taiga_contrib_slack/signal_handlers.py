@@ -51,7 +51,7 @@ def on_new_history_entry(sender, instance, created, **kwargs):
         extra_args = [instance]
     elif instance.type == HistoryType.delete:
         task = tasks.delete_slackhook
-        extra_args = []
+        extra_args = [instance]
 
     for slackhook in slackhooks:
         args = [slackhook["url"], slackhook["channel"], obj] + extra_args

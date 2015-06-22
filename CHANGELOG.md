@@ -3,6 +3,7 @@
 
 ## 0.0.9 (unreleased)
 - [Issue #2926] Fix problem with escaping characters on creation.
+- [Issue #2932] Show username and user photo in slack messages.
 
 
 ## 0.0.8 (2015-06-18)
