@@ -1,6 +1,10 @@
 # Changelog #
 
 
+## 0.0.9 (unreleased)
+- [Issue #2926] Fix problem with escaping characters on creation.
+
+
 ## 0.0.8 (2015-06-18)
 - Add compatibility with taiga >= 1.8.
 
