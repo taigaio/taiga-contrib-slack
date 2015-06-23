@@ -23,6 +23,8 @@ from django.template import loader, Context
 from taiga.base.api.renderers import UnicodeJSONRenderer
 from taiga.base.utils.db import get_typename_for_model_instance
 from taiga.celery import app
+from taiga.users.models import User
+from taiga.users.services import get_photo_or_gravatar_url
 
 
 logger = logging.getLogger(__name__)
@@ -34,9 +36,6 @@ def _get_type(obj):
 
 
 def _send_request(url, data):
-    data["username"] = getattr(settings, "SLACKHOOKS_USERNAME", "Taiga")
-    data["icon_url"] = getattr(settings, "SLACKHOOKS_ICON", "https://tree.taiga.io/images/favicon.png")
-
     serialized_data = UnicodeJSONRenderer().render(data)
 
     if settings.CELERY_ENABLED:
@@ -256,6 +255,14 @@ def change_slackhook(url, channel, obj, change):
             if attachment:
                 data['attachments'].append(attachment)
 
+    data["username"] = "{} ({})".format(getattr(settings, "SLACKHOOKS_USERNAME", "Taiga"), change.user['name'])
+    try:
+        user = User.objects.get(pk=change.user['pk'])
+        data["icon_url"] = get_photo_or_gravatar_url(user)
+        if not data["icon_url"].startswith("http"):
+            data["icon_url"] = "https:{}".format(data["icon_url"])
+    except User.DoesNotExist:
+        data["icon_url"] = getattr(settings, "SLACKHOOKS_ICON", "https://tree.taiga.io/images/favicon.png")
     _send_request(url, data)
 
 
@@ -288,11 +295,15 @@ def create_slackhook(url, channel, obj):
     if channel:
         data["channel"] = channel
 
+    data["username"] = "{} ({})".format(getattr(settings, "SLACKHOOKS_USERNAME", "Taiga"), obj.owner.get_full_name())
+    data["icon_url"] = get_photo_or_gravatar_url(obj.owner)
+    if not data["icon_url"].startswith("http"):
+        data["icon_url"] = "https:{}".format(data["icon_url"])
     _send_request(url, data)
 
 
 @app.task
-def delete_slackhook(url, channel, obj):
+def delete_slackhook(url, channel, obj, change):
     obj_type = _get_type(obj)
 
     template = loader.get_template('taiga_contrib_slack/delete.jinja')
@@ -314,6 +325,14 @@ def delete_slackhook(url, channel, obj):
     if channel:
         data["channel"] = channel
 
+    data["username"] = "{} ({})".format(getattr(settings, "SLACKHOOKS_USERNAME", "Taiga"), change.user['name'])
+    try:
+        user = User.objects.get(pk=change.user['pk'])
+        data["icon_url"] = get_photo_or_gravatar_url(user)
+        if not data["icon_url"].startswith("http"):
+            data["icon_url"] = "https:{}".format(data["icon_url"])
+    except User.DoesNotExist:
+        data["icon_url"] = getattr(settings, "SLACKHOOKS_ICON", "https://tree.taiga.io/images/favicon.png")
     _send_request(url, data)
 
 
@@ -321,10 +340,15 @@ def delete_slackhook(url, channel, obj):
 def test_slackhook(url, channel):
     data = {
         "text": "Test slack message",
-
     }
 
     if channel:
         data["channel"] = channel
 
+    data["username"] = getattr(settings, "SLACKHOOKS_USERNAME", "Taiga")
+    try:
+        user = User.objects.get(pk=change.user['pk'])
+        data["icon_url"] = get_photo_or_gravatar_url(user)
+    except User.DoesNotExist:
+        data["icon_url"] = getattr(settings, "SLACKHOOKS_ICON", "https://tree.taiga.io/images/favicon.png")
     _send_request(url, data)
