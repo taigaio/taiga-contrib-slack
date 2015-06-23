@@ -17,6 +17,9 @@
 import requests
 import logging
 
+from markdown.inlinepatterns import LINK_RE
+import re
+
 from django.conf import settings
 from django.template import loader, Context
 
@@ -213,12 +216,20 @@ def _field_to_attachment(template_field, field_name, values):
     return attachment
 
 
+def _link_transform(match):
+    url_split = match.group(8).split()
+    try:
+        return "{} ({})".format(match.group(1), url_split[0])
+    except IndexError:
+        return "{}".format(match.group(1))
+
 @app.task
 def change_slackhook(url, channel, obj, change):
     obj_type = _get_type(obj)
 
     template_change = loader.get_template('taiga_contrib_slack/change.jinja')
-    context = Context({"obj": obj, "obj_type": obj_type, "change": change})
+    comment = re.sub(LINK_RE, _link_transform, change.comment)
+    context = Context({"obj": obj, "obj_type": obj_type, "change": change, "comment": comment})
 
     change_text = template_change.render(context)
     data = {"text": change_text.strip()}
