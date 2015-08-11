@@ -65,7 +65,9 @@ SlackWebhooksDirective = ($repo, $confirm, $loading) ->
 
             return if not form.validate()
 
-            $loading.start(submitButton)
+            currentLoading = $loading()
+                .target(submitButton)
+                .start()
 
             if not $scope.slackhook.id
                 promise = $repo.create("slack", $scope.slackhook)
@@ -81,11 +83,11 @@ SlackWebhooksDirective = ($repo, $confirm, $loading) ->
                     $scope.slackhook = {project: $scope.projectId}
 
             promise.then (data)->
-                $loading.finish(submitButton)
+                currentLoading.finish()
                 $confirm.notify("success")
 
             promise.then null, (data) ->
-                $loading.finish(submitButton)
+                currentLoading.finish()
                 form.setErrors(data)
                 if data._error_message
                     $confirm.notify("error", data._error_message)
