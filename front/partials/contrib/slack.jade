@@ -21,6 +21,111 @@ div(contrib-slack-webhooks, ng-controller="ContribSlackAdminController as ctrl")
             fieldset.contrib-input
                 input(type="text", name="channel", ng-model="slackhook.channel", placeholder="#slackchannel", id="channel")
 
+        fieldset
+            h2 Notify User Stories
+            div.check-item
+                span Create
+                div.check
+                    input(type="checkbox" name="notification" ng-model="slackhook.notify_userstory_create")
+                    div
+                    span.check-text.check-yes(translate="COMMON.YES")
+                    span.check-text.check-no(translate="COMMON.NO")
+
+            div.check-item
+                span Change
+                div.check
+                    input(type="checkbox" name="notification" ng-model="slackhook.notify_userstory_change")
+                    div
+                    span.check-text.check-yes(translate="COMMON.YES")
+                    span.check-text.check-no(translate="COMMON.NO")
+
+            div.check-item
+                span Delete
+                div.check
+                    input(type="checkbox" name="notification" ng-model="slackhook.notify_userstory_delete")
+                    div
+                    span.check-text.check-yes(translate="COMMON.YES")
+                    span.check-text.check-no(translate="COMMON.NO")
+
+        fieldset
+            h2 Notify Tasks
+            div.check-item
+                span Create
+                div.check
+                    input(type="checkbox" name="notification" ng-model="slackhook.notify_task_create")
+                    div
+                    span.check-text.check-yes(translate="COMMON.YES")
+                    span.check-text.check-no(translate="COMMON.NO")
+
+            div.check-item
+                span Change
+                div.check
+                    input(type="checkbox" name="notification" ng-model="slackhook.notify_task_change")
+                    div
+                    span.check-text.check-yes(translate="COMMON.YES")
+                    span.check-text.check-no(translate="COMMON.NO")
+
+            div.check-item
+                span Delete
+                div.check
+                    input(type="checkbox" name="notification" ng-model="slackhook.notify_task_delete")
+                    div
+                    span.check-text.check-yes(translate="COMMON.YES")
+                    span.check-text.check-no(translate="COMMON.NO")
+
+        fieldset
+            h2 Notify Issues
+            div.check-item
+                span Create
+                div.check
+                    input(type="checkbox" name="notification" ng-model="slackhook.notify_issue_create")
+                    div
+                    span.check-text.check-yes(translate="COMMON.YES")
+                    span.check-text.check-no(translate="COMMON.NO")
+
+            div.check-item
+                span Change
+                div.check
+                    input(type="checkbox" name="notification" ng-model="slackhook.notify_issue_change")
+                    div
+                    span.check-text.check-yes(translate="COMMON.YES")
+                    span.check-text.check-no(translate="COMMON.NO")
+
+            div.check-item
+                span Delete
+                div.check
+                    input(type="checkbox" name="notification" ng-model="slackhook.notify_issue_delete")
+                    div
+                    span.check-text.check-yes(translate="COMMON.YES")
+                    span.check-text.check-no(translate="COMMON.NO")
+
+        fieldset
+            h2 Notify Wiki
+            div.check-item
+                span Create
+                div.check
+                    input(type="checkbox" name="notification" ng-model="slackhook.notify_wikipage_create")
+                    div
+                    span.check-text.check-yes(translate="COMMON.YES")
+                    span.check-text.check-no(translate="COMMON.NO")
+
+            div.check-item
+                span Change
+                div.check
+                    input(type="checkbox" name="notification" ng-model="slackhook.notify_wikipage_change")
+                    div
+                    span.check-text.check-yes(translate="COMMON.YES")
+                    span.check-text.check-no(translate="COMMON.NO")
+
+            div.check-item
+                span Delete
+                div.check
+                    input(type="checkbox" name="notification" ng-model="slackhook.notify_wikipage_delete")
+                    div
+                    span.check-text.check-yes(translate="COMMON.YES")
+                    span.check-text.check-no(translate="COMMON.NO")
+
+
         button(type="submit", class="hidden")
         a.button-green.submit-button(href="", title="Save", ng-click="ctrl.updateOrCreateHook(slackhook)")
             span Save

@@ -28,7 +28,22 @@ def _get_project_slackhooks(project):
         slackhooks.append({
             "id": slackhook.pk,
             "url": slackhook.url,
-            "channel": slackhook.channel
+            "channel": slackhook.channel,
+            "notify_config": {
+                "notify_issue_create": slackhook.notify_issue_create,
+                "notify_issue_change": slackhook.notify_issue_change,
+                "notify_issue_delete": slackhook.notify_issue_delete,
+                "notify_userstory_create": slackhook.notify_userstory_create,
+                "notify_userstory_change": slackhook.notify_userstory_change,
+                "notify_userstory_delete": slackhook.notify_userstory_delete,
+                "notify_task_create": slackhook.notify_task_create,
+                "notify_task_change": slackhook.notify_task_change,
+                "notify_task_delete": slackhook.notify_task_delete,
+                "notify_wikipage_create": slackhook.notify_wikipage_create,
+                "notify_wikipage_change": slackhook.notify_wikipage_change,
+                "notify_wikipage_delete": slackhook.notify_wikipage_delete
+            }
+
         })
     return slackhooks
 
@@ -57,7 +72,10 @@ def on_new_history_entry(sender, instance, created, **kwargs):
         extra_args = [instance]
 
     for slackhook in slackhooks:
-        args = [slackhook["url"], slackhook["channel"], obj] + extra_args
+        args = [
+            slackhook["url"], slackhook["channel"],
+            slackhook["notify_config"], obj
+        ] + extra_args
 
         if settings.CELERY_ENABLED:
             task.delay(*args)
