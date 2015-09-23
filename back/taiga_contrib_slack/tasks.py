@@ -357,9 +357,5 @@ def test_slackhook(url, channel):
         data["channel"] = channel
 
     data["username"] = getattr(settings, "SLACKHOOKS_USERNAME", "Taiga")
-    try:
-        user = User.objects.get(pk=change.user['pk'])
-        data["icon_url"] = get_photo_or_gravatar_url(user)
-    except User.DoesNotExist:
-        data["icon_url"] = getattr(settings, "SLACKHOOKS_ICON", "https://tree.taiga.io/images/favicon.png")
+    data["icon_url"] = getattr(settings, "SLACKHOOKS_ICON", "https://tree.taiga.io/images/favicon.png")
     _send_request(url, data)
