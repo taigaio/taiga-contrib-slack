@@ -37,7 +37,21 @@ class SlackAdmin
             promise = @repo.queryMany("slack", {project: @scope.projectId})
 
             promise.then (slackhooks) =>
-                @scope.slackhook = {project: @scope.projectId}
+                @scope.slackhook = {
+                    project: @scope.projectId,
+                    notify_userstory_create: true,
+                    notify_userstory_change: true,
+                    notify_userstory_delete: true,
+                    notify_task_create: true,
+                    notify_task_change: true,
+                    notify_task_delete: true,
+                    notify_issue_create: true,
+                    notify_issue_change: true,
+                    notify_issue_delete: true,
+                    notify_wikipage_create: true,
+                    notify_wikipage_change: true,
+                    notify_wikipage_delete: true
+                }
                 if slackhooks.length > 0
                     @scope.slackhook = slackhooks[0]
 
@@ -80,7 +94,21 @@ SlackWebhooksDirective = ($repo, $confirm, $loading) ->
             else
                 promise = $repo.remove($scope.slackhook)
                 promise.then (data) ->
-                    $scope.slackhook = {project: $scope.projectId}
+                    $scope.slackhook = {
+                        project: $scope.projectId,
+                        notify_userstory_create: true,
+                        notify_userstory_change: true,
+                        notify_userstory_delete: true,
+                        notify_task_create: true,
+                        notify_task_change: true,
+                        notify_task_delete: true,
+                        notify_issue_create: true,
+                        notify_issue_change: true,
+                        notify_issue_delete: true,
+                        notify_wikipage_create: true,
+                        notify_wikipage_change: true,
+                        notify_wikipage_delete: true
+                    }
 
             promise.then (data)->
                 currentLoading.finish()

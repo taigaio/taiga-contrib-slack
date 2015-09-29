@@ -223,9 +223,17 @@ def _link_transform(match):
     except IndexError:
         return "{}".format(match.group(1))
 
+
+def _check_notify_permission(notify_config, obj_type, action):
+    return notify_config['notify_{0}_{1}'.format(obj_type, action)]
+
+
 @app.task
-def change_slackhook(url, channel, obj, change):
+def change_slackhook(url, channel, notify_config, obj, change):
     obj_type = _get_type(obj)
+
+    if not _check_notify_permission(notify_config, obj_type, 'change'):
+        return
 
     template_change = loader.get_template('taiga_contrib_slack/change.jinja')
     comment = re.sub(LINK_RE, _link_transform, change.comment)
@@ -278,8 +286,11 @@ def change_slackhook(url, channel, obj, change):
 
 
 @app.task
-def create_slackhook(url, channel, obj):
+def create_slackhook(url, channel, notify_config, obj):
     obj_type = _get_type(obj)
+
+    if not _check_notify_permission(notify_config, obj_type, 'create'):
+        return
 
     template = loader.get_template('taiga_contrib_slack/create.jinja')
     context = Context({"obj": obj, "obj_type": obj_type})
@@ -314,8 +325,11 @@ def create_slackhook(url, channel, obj):
 
 
 @app.task
-def delete_slackhook(url, channel, obj, change):
+def delete_slackhook(url, channel, notify_config, obj, change):
     obj_type = _get_type(obj)
+
+    if not _check_notify_permission(notify_config, obj_type, 'delete'):
+        return
 
     template = loader.get_template('taiga_contrib_slack/delete.jinja')
     context = Context({"obj": obj, "obj_type": obj_type})
@@ -357,9 +371,5 @@ def test_slackhook(url, channel):
         data["channel"] = channel
 
     data["username"] = getattr(settings, "SLACKHOOKS_USERNAME", "Taiga")
-    try:
-        user = User.objects.get(pk=change.user['pk'])
-        data["icon_url"] = get_photo_or_gravatar_url(user)
-    except User.DoesNotExist:
-        data["icon_url"] = getattr(settings, "SLACKHOOKS_ICON", "https://tree.taiga.io/images/favicon.png")
+    data["icon_url"] = getattr(settings, "SLACKHOOKS_ICON", "https://tree.taiga.io/images/favicon.png")
     _send_request(url, data)
