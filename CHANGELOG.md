@@ -2,6 +2,8 @@
 
 
 ## 0.0.9 (unreleased)
+- Force to use Django == 1.8.5
+- Add compatibility with taiga-back 1.9.
 - [Issue #2926] Fix problem with escaping characters on creation.
 - [Issue #2932] Show username and user photo in slack messages.
 - Fixed problem with test button.
