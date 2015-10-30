@@ -57,7 +57,7 @@ def _markdown_field_to_attachment(template_field, field_name, values):
         "mrkdwn_in": ["fields", "title", "fallback"]
     }
     context = Context({"field_name": field_name, "values": values})
-    change_field_text = template_field.render(context)
+    change_field_text = template_field.render(context.flatten())
 
     attachment['fallback'] = change_field_text.strip()
     attachment['title'] = field_name.replace("_", " ")
@@ -84,7 +84,7 @@ def _field_to_attachment(template_field, field_name, values):
         "mrkdwn_in": ["fields", "title", "fallback"]
     }
     context = Context({"field_name": field_name, "values": values})
-    change_field_text = template_field.render(context)
+    change_field_text = template_field.render(context.flatten())
 
     attachment['fallback'] = change_field_text.strip()
 
@@ -239,7 +239,7 @@ def change_slackhook(url, channel, notify_config, obj, change):
     comment = re.sub(LINK_RE, _link_transform, change.comment)
     context = Context({"obj": obj, "obj_type": obj_type, "change": change, "comment": comment})
 
-    change_text = template_change.render(context)
+    change_text = template_change.render(context.flatten())
     data = {"text": change_text.strip()}
     data['attachments'] = []
 
@@ -294,10 +294,8 @@ def create_slackhook(url, channel, notify_config, obj):
 
     template = loader.get_template('taiga_contrib_slack/create.jinja')
     context = Context({"obj": obj, "obj_type": obj_type})
-    description = getattr(obj, 'description', '-')
-
     data = {
-        "text": template.render(context),
+        "text": template.render(context.flatten()),
         "attachments": [{
             "color": "good",
             "fields": [{
@@ -307,12 +305,25 @@ def create_slackhook(url, channel, notify_config, obj):
             }]
         }]
     }
-    if description:
-        data["attachments"][0]["fields"].append({
-            "title": "Description",
-            "value": description,
-            "short": False,
-        })
+
+    if obj_type == "wikipage":
+        # For wikipages
+        content = getattr(obj, 'content', '-')
+        if content:
+            data["attachments"][0]["fields"].append({
+                "title": "Content",
+                "value": content,
+                "short": False,
+            })
+    else:
+        # For stories, tasks and issues
+        description = getattr(obj, 'description', '-')
+        if description:
+            data["attachments"][0]["fields"].append({
+                "title": "Description",
+                "value": description,
+                "short": False,
+            })
 
     if channel:
         data["channel"] = channel
@@ -335,17 +346,34 @@ def delete_slackhook(url, channel, notify_config, obj, change):
     context = Context({"obj": obj, "obj_type": obj_type})
     description = getattr(obj, 'description', '-')
 
-    data = {
-        "text": template.render(context),
-        "attachments": [{
-            "color": "danger",
-            "fields": [{
-                "title": "Description",
-                "value": description,
-                "short": False,
+    if obj_type == "wikipage":
+        # For wikipages
+        content = getattr(obj, 'content', '-')
+        data = {
+            "text": template.render(context.flatten()),
+            "attachments": [{
+                "color": "danger",
+                "fields": [{
+                    "title": "Content",
+                    "value": content,
+                    "short": False,
+                }]
             }]
-        }]
-    }
+        }
+    else:
+        # For stories, tasks and issues
+        description = getattr(obj, 'description', '-')
+        data = {
+            "text": template.render(context.flatten()),
+            "attachments": [{
+                "color": "danger",
+                "fields": [{
+                    "title": "Description",
+                    "value": description,
+                    "short": False,
+                }]
+            }]
+        }
 
     if channel:
         data["channel"] = channel
