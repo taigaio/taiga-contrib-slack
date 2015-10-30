@@ -225,7 +225,7 @@ def _link_transform(match):
 
 
 def _check_notify_permission(notify_config, obj_type, action):
-    return notify_config['notify_{0}_{1}'.format(obj_type, action)]
+    return notify_config.get('notify_{0}_{1}'.format(obj_type, action), False)
 
 
 @app.task
