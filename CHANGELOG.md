@@ -1,7 +1,7 @@
 # Changelog #
 
 
-## 0.0.9 (unreleased)
+## 0.0.9 (2015-11-02)
 - Force to use Django == 1.8.5
 - Add compatibility with taiga-back 1.9.
 - [Issue #2926] Fix problem with escaping characters on creation.
