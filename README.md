@@ -6,6 +6,8 @@ Taiga contrib slack
 
 The Taiga plugin for slack integration.
 
+![taiga-contrib-slack example](doc/img/taiga-slack-notifications.png)
+
 Installation
 ------------
 
