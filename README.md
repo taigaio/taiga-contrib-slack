@@ -31,20 +31,25 @@ Then run the migrations to generate the new need table:
   python manage.py migrate taiga_contrib_slack
 ```
 
-#### Taiga Front
+### Taiga Front
 
-Download in your `dist/js/` directory of Taiga front the `taiga-contrib-slack` compiled code:
+Download in your `dist/plugins/` directory of Taiga front the `taiga-contrib-slack` compiled code (you need subversion in your system):
 
 ```bash
-  cd dist/js
-  wget "https://raw.githubusercontent.com/taigaio/taiga-contrib-slack/$(pip show taiga-contrib-slack | awk '/^Version: /{print $2}')/front/dist/slack.js"
+  cd dist/
+  mkdir -p plugins
+  cd plugins
+  svn export "https://github.com/taigaio/taiga-contrib-slack/tags/$(pip show taiga-contrib-slack | awk '/^Version: /{print $2}')/front/dist" "slack"
 ```
 
-Include in your dist/js/conf.json in the contribPlugins list the value `"/js/slack.js"`:
+Include in your dist/conf.json in the contribPlugins list the value `"/plugins/slack/slack.json"`:
 
 ```json
 ...
-    "contribPlugins": ["/js/slack.js"]
+    "contribPlugins": [
+        (...)
+        "/plugins/slack/slack.json"
+    ]
 ...
 ```
 
