@@ -1,0 +1,10 @@
+{
+    "name": "Slack",
+    "slug": "slack",
+    "description": "Integrate Taiga with Slack (https://slack.com)",
+    "type": "admin",
+    "module": "taigaContrib.slack",
+    "template": "plugin/slack",
+    "js": "/plugins/slack/slack.js"
+}
+

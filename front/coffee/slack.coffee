@@ -1,23 +1,6 @@
-@.taigaContribPlugins = @.taigaContribPlugins or []
-
-slackInfo = {
-    slug: "slack"
-    name: "Slack"
-    type: "admin"
-    module: 'taigaContrib.slack'
-}
-
-@.taigaContribPlugins.push(slackInfo)
-
-module = angular.module('taigaContrib.slack', [])
-
 debounce = (wait, func) ->
     return _.debounce(func, wait, {leading: true, trailing: false})
 
-initSlackPlugin = ($tgUrls) ->
-    $tgUrls.update({
-        "slack": "/slack"
-    })
 
 class SlackAdmin
     @.$inject = [
@@ -69,7 +52,6 @@ class SlackAdmin
         promise.error (data, status) =>
             @confirm.notify("error")
 
-module.controller("ContribSlackAdminController", SlackAdmin)
 
 SlackWebhooksDirective = ($repo, $confirm, $loading) ->
     link = ($scope, $el, $attrs) ->
@@ -127,6 +109,13 @@ SlackWebhooksDirective = ($repo, $confirm, $loading) ->
 
     return {link:link}
 
+module = angular.module('taigaContrib.slack', [])
+
+module.controller("ContribSlackAdminController", SlackAdmin)
 module.directive("contribSlackWebhooks", ["$tgRepo", "$tgConfirm", "$tgLoading", SlackWebhooksDirective])
 
+initSlackPlugin = ($tgUrls) ->
+    $tgUrls.update({
+        "slack": "/slack"
+    })
 module.run(["$tgUrls", initSlackPlugin])
