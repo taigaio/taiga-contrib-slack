@@ -39,14 +39,12 @@ def _get_type(obj):
 
 
 def _send_request(url, data):
-    serialized_data = UnicodeJSONRenderer().render(data)
-
     if settings.CELERY_ENABLED:
-        requests.post(url, data=serialized_data)
+        requests.post(url, json=data)
         return
 
     try:
-        requests.post(url, data=serialized_data)
+        requests.post(url, json=data)
     except Exception:
         logger.error("Error sending request to slack")
 
