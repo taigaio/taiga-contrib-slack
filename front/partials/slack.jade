@@ -26,10 +26,8 @@
 div(contrib-slack-webhooks, ng-controller="ContribSlackAdminController as ctrl")
     header
         h1
-            span.project-name
-                | {{::project.name}}
-            span.green
-                | {{::sectionName}}
+            span.project-name {{::project.name}}
+            span.green {{::sectionName}}
 
     form
         label(for="url") Slack webhook url
@@ -167,6 +165,7 @@ div(contrib-slack-webhooks, ng-controller="ContribSlackAdminController as ctrl")
             span Save
 
     a.help-button(href="https://taiga.io/support/slack-integration/", target="_blank")
-        span.icon.icon-help
+        svg.icon.icon-question
+            use(xlink:href="#icon-question")
         span Do you need help? Check out our support page!
 |''')]);
