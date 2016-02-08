@@ -4,7 +4,6 @@
     "description": "Integrate Taiga with Slack (https://slack.com)",
     "type": "admin",
     "module": "taigaContrib.slack",
-    "template": "plugin/slack",
+    "template": "/plugins/slack/slack.html",
     "js": "/plugins/slack/slack.js"
 }
-
