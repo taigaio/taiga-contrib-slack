@@ -16,22 +16,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.apps import AppConfig
-from django.db.models import signals
-
-from . import signal_handlers as handlers
-from .api import SlackHookViewSet
-from taiga.projects.history.models import HistoryEntry
-
-# Register route
-from taiga.contrib_routers import router
-router.register(r"slack", SlackHookViewSet, base_name="slack")
 
 
 def connect_taiga_contrib_slack_signals():
+    from django.db.models import signals
+    from taiga.projects.history.models import HistoryEntry
+    from . import signal_handlers as handlers
     signals.post_save.connect(handlers.on_new_history_entry, sender=HistoryEntry, dispatch_uid="taiga_contrib_slack")
 
 
 def disconnect_taiga_contrib_slack_signals():
+    from django.db.models import signals
     signals.post_save.disconnect(dispatch_uid="taiga_contrib_slack")
 
 
@@ -40,4 +35,8 @@ class TaigaContribSlackAppConfig(AppConfig):
     verbose_name = "Taiga contrib slack App Config"
 
     def ready(self):
+        from taiga.contrib_routers import router
+        from .api import SlackHookViewSet
+        router.register(r"slack", SlackHookViewSet, base_name="slack")
+
         connect_taiga_contrib_slack_signals()
