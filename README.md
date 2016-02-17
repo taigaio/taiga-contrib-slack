@@ -10,6 +10,7 @@ The Taiga plugin for slack integration.
 
 Installation
 ------------
+### Production env
 
 #### Taiga Back
 
@@ -19,7 +20,7 @@ In your Taiga back python virtualenv install the pip package `taiga-contrib-slac
   pip install taiga-contrib-slack
 ```
 
-Modify your settings/local.py and include the line:
+Modify your `settings/local.py` and include the line:
 
 ```python
   INSTALLED_APPS += ["taiga_contrib_slack"]
@@ -31,7 +32,7 @@ Then run the migrations to generate the new need table:
   python manage.py migrate taiga_contrib_slack
 ```
 
-### Taiga Front
+#### Taiga Front
 
 Download in your `dist/plugins/` directory of Taiga front the `taiga-contrib-slack` compiled code (you need subversion in your system):
 
@@ -42,7 +43,7 @@ Download in your `dist/plugins/` directory of Taiga front the `taiga-contrib-sla
   svn export "https://github.com/taigaio/taiga-contrib-slack/tags/$(pip show taiga-contrib-slack | awk '/^Version: /{print $2}')/front/dist" "slack"
 ```
 
-Include in your dist/conf.json in the contribPlugins list the value `"/plugins/slack/slack.json"`:
+Include in your `dist/conf.json` in the `contribPlugins` list the value `"/plugins/slack/slack.json"`:
 
 ```json
 ...
@@ -52,6 +53,58 @@ Include in your dist/conf.json in the contribPlugins list the value `"/plugins/s
     ]
 ...
 ```
+
+### Dev env
+
+#### Taiga Back
+
+Clone the repo and
+
+```bash
+  cd taiga-contrib-slack/back
+  workon taiga
+  pip install -e .
+```
+
+Modify your `settings/local.py` and include the line:
+
+```python
+  INSTALLED_APPS += ["taiga_contrib_slack"]
+```
+
+Then run the migrations to generate the new need table:
+
+```bash
+  python manage.py migrate taiga_contrib_slack
+```
+
+#### Taiga Front
+
+```bash
+  npm install
+  gulp
+```
+
+Link `dist` in `taiga-front` plugins directory:
+
+```bash
+  cd taiga-front/dist
+  mkdir -p plugins
+  cd plugins
+  ln -s ../../../taiga-Contrib-slack/front/dist slack
+```
+
+Include in your `dist/conf.json` in the `contribPlugins` list the value `"/plugins/slack/slack.json"`:
+
+```json
+...
+    "contribPlugins": [
+        (...)
+        "/plugins/slack/slack.json"
+    ]
+...
+```
+
 
 How to use
 ----------
