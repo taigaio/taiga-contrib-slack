@@ -20,7 +20,7 @@ In your Taiga back python virtualenv install the pip package `taiga-contrib-slac
   pip install taiga-contrib-slack
 ```
 
-Modify your `settings/local.py` and include the line:
+Modify in `taiga-back` your `settings/local.py` and include the line:
 
 ```python
   INSTALLED_APPS += ["taiga_contrib_slack"]
@@ -66,7 +66,7 @@ Clone the repo and
   pip install -e .
 ```
 
-Modify your `settings/local.py` and include the line:
+Modify in `taiga-back` your `settings/local.py` and include the line:
 
 ```python
   INSTALLED_APPS += ["taiga_contrib_slack"]
@@ -80,12 +80,7 @@ Then run the migrations to generate the new need table:
 
 #### Taiga Front
 
-```bash
-  npm install
-  gulp
-```
-
-Link `dist` in `taiga-front` plugins directory:
+After clone the repo link `dist` in `taiga-front` plugins directory:
 
 ```bash
   cd taiga-front/dist
@@ -104,6 +99,16 @@ Include in your `dist/conf.json` in the `contribPlugins` list the value `"/plugi
     ]
 ...
 ```
+
+In the plugin source dir `taiga-contrib-slack/front` run
+
+```bash
+npm install
+```
+and use:
+
+- `gulp` to regenerate the source and watch for changes.
+- `gulp build` to only regenerate the source.
 
 
 How to use
