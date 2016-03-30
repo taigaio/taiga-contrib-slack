@@ -16,6 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.apps import AppConfig
+from django.conf.urls import include, url
 
 
 def connect_taiga_contrib_slack_signals():
@@ -35,8 +36,12 @@ class TaigaContribSlackAppConfig(AppConfig):
     verbose_name = "Taiga contrib slack App Config"
 
     def ready(self):
-        from taiga.contrib_routers import router
+        from taiga.base import routers
+        from taiga.urls import urlpatterns
         from .api import SlackHookViewSet
+
+        router = routers.DefaultRouter(trailing_slash=False)
         router.register(r"slack", SlackHookViewSet, base_name="slack")
+        urlpatterns.append(url(r'^api/v1/', include(router.urls)))
 
         connect_taiga_contrib_slack_signals()
