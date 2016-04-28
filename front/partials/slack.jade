@@ -139,8 +139,9 @@ div(contrib-slack-webhooks, ng-controller="ContribSlackAdminController as ctrl")
         a.button-green.submit-button(href="", title="Save", ng-click="ctrl.updateOrCreateHook(slackhook)")
             span Save
 
-    a.help-button(href="https://taiga.io/support/slack-integration/", target="_blank")
-        tg-svg(
-            svg-icon="icon-question"
-        )
+    a.help-button(
+        href="https://tree.taiga.io/support/contrib-plugins/slack-integration/"
+        target="_blank"
+    )
+        tg-svg(svg-icon="icon-question")
         span Do you need help? Check out our support page!

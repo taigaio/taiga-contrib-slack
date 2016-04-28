@@ -1,6 +1,6 @@
 {
   "name": "taiga-contrib-slack",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Taiga contrib plugin for slack integration",
   "main": "index.js",
   "repository": {

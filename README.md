@@ -114,4 +114,4 @@ and use:
 How to use
 ----------
 
-Follow the instructions on our support page [Taiga.io Support > Contrib Plugins > Slack integration](https://taiga.io/support/slack-integration/ "Taiga.io Support > Contrib Plugins > Slack integration")
+Follow the instructions on our support page [Taiga.io Support > Contrib Plugins > Slack integration](https://tree.taiga.io/support/contrib-plugins/slack-integration/ "Taiga.io Support > Contrib Plugins > Slack integration")
