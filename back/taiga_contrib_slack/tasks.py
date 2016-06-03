@@ -277,7 +277,7 @@ def change_slackhook(url, channel, notify_config, obj, change):
     try:
         user = User.objects.get(pk=change.user['pk'])
         data["icon_url"] = get_photo_or_gravatar_url(user)
-        if not data["icon_url"].startswith("http"):
+        if data["icon_url"] and not data["icon_url"].startswith("http"):
             data["icon_url"] = "https:{}".format(data["icon_url"])
     except User.DoesNotExist:
         data["icon_url"] = getattr(settings, "SLACKHOOKS_ICON", "https://tree.taiga.io/images/favicon.png")
@@ -329,7 +329,7 @@ def create_slackhook(url, channel, notify_config, obj):
 
     data["username"] = "{} ({})".format(getattr(settings, "SLACKHOOKS_USERNAME", "Taiga"), obj.owner.get_full_name())
     data["icon_url"] = get_photo_or_gravatar_url(obj.owner)
-    if not data["icon_url"].startswith("http"):
+    if data["icon_url"] and not data["icon_url"].startswith("http"):
         data["icon_url"] = "https:{}".format(data["icon_url"])
     _send_request(url, data)
 
@@ -381,7 +381,7 @@ def delete_slackhook(url, channel, notify_config, obj, change):
     try:
         user = User.objects.get(pk=change.user['pk'])
         data["icon_url"] = get_photo_or_gravatar_url(user)
-        if not data["icon_url"].startswith("http"):
+        if data["icon_url"] and not data["icon_url"].startswith("http"):
             data["icon_url"] = "https:{}".format(data["icon_url"])
     except User.DoesNotExist:
         data["icon_url"] = getattr(settings, "SLACKHOOKS_ICON", "https://tree.taiga.io/images/favicon.png")

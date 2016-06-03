@@ -1,5 +1,8 @@
 # Changelog #
 
+## 2.1.1 (2016-06-03)
+- Fix a bug if the object owner has not a photo.
+
 
 ## 2.1.0 (2016-05-03)
 - Compatible with Taiga 2.1.0
