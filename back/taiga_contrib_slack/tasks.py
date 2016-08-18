@@ -28,7 +28,7 @@ from taiga.base.api.renderers import UnicodeJSONRenderer
 from taiga.base.utils.db import get_typename_for_model_instance
 from taiga.celery import app
 from taiga.users.models import User
-from taiga.users.services import get_photo_or_gravatar_url
+from taiga.users.services import get_user_photo_url
 
 
 logger = logging.getLogger(__name__)
@@ -276,7 +276,7 @@ def change_slackhook(url, channel, notify_config, obj, change):
     data["username"] = "{} ({})".format(getattr(settings, "SLACKHOOKS_USERNAME", "Taiga"), change.user['name'])
     try:
         user = User.objects.get(pk=change.user['pk'])
-        data["icon_url"] = get_photo_or_gravatar_url(user)
+        data["icon_url"] = get_user_photo_url(user)
         if data["icon_url"] and not data["icon_url"].startswith("http"):
             data["icon_url"] = "https:{}".format(data["icon_url"])
     except User.DoesNotExist:
@@ -328,7 +328,7 @@ def create_slackhook(url, channel, notify_config, obj):
         data["channel"] = channel
 
     data["username"] = "{} ({})".format(getattr(settings, "SLACKHOOKS_USERNAME", "Taiga"), obj.owner.get_full_name())
-    data["icon_url"] = get_photo_or_gravatar_url(obj.owner)
+    data["icon_url"] = get_user_photo_url(obj.owner)
     if data["icon_url"] and not data["icon_url"].startswith("http"):
         data["icon_url"] = "https:{}".format(data["icon_url"])
     _send_request(url, data)
@@ -380,7 +380,7 @@ def delete_slackhook(url, channel, notify_config, obj, change):
     data["username"] = "{} ({})".format(getattr(settings, "SLACKHOOKS_USERNAME", "Taiga"), change.user['name'])
     try:
         user = User.objects.get(pk=change.user['pk'])
-        data["icon_url"] = get_photo_or_gravatar_url(user)
+        data["icon_url"] = get_user_photo_url(user)
         if data["icon_url"] and not data["icon_url"].startswith("http"):
             data["icon_url"] = "https:{}".format(data["icon_url"])
     except User.DoesNotExist:
