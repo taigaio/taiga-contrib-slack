@@ -31,6 +31,11 @@ def _get_project_slackhooks(project):
             "url": slackhook.url,
             "channel": slackhook.channel,
             "notify_config": {
+                "notify_epic_create": slackhook.notify_epic_create,
+                "notify_epic_change": slackhook.notify_epic_change,
+                "notify_epic_delete": slackhook.notify_epic_delete,
+                "notify_relateduserstory_create": slackhook.notify_relateduserstory_create,
+                "notify_relateduserstory_delete": slackhook.notify_relateduserstory_delete,
                 "notify_issue_create": slackhook.notify_issue_create,
                 "notify_issue_change": slackhook.notify_issue_change,
                 "notify_issue_delete": slackhook.notify_issue_delete,

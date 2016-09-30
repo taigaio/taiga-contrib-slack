@@ -307,7 +307,7 @@ def create_slackhook(url, channel, notify_config, obj):
 
     if obj_type == "wikipage":
         # For wikipages
-        content = getattr(obj, 'content', '-')
+        content = getattr(obj, 'content', None)
         if content:
             data["attachments"][0]["fields"].append({
                 "title": "Content",
@@ -315,8 +315,8 @@ def create_slackhook(url, channel, notify_config, obj):
                 "short": False,
             })
     else:
-        # For stories, tasks and issues
-        description = getattr(obj, 'description', '-')
+        # For stories, tasks, issues and epics
+        description = getattr(obj, 'description', None)
         if description:
             data["attachments"][0]["fields"].append({
                 "title": "Description",
@@ -345,34 +345,31 @@ def delete_slackhook(url, channel, notify_config, obj, change):
     context = Context({"obj": obj, "obj_type": obj_type})
     description = getattr(obj, 'description', '-')
 
+    data = {
+        "text": template.render(context.flatten()),
+        "attachments": [{
+            "color": "danger",
+            "fields": []
+        }]
+    }
+
     if obj_type == "wikipage":
         # For wikipages
-        content = getattr(obj, 'content', '-')
-        data = {
-            "text": template.render(context.flatten()),
-            "attachments": [{
-                "color": "danger",
-                "fields": [{
-                    "title": "Content",
-                    "value": content,
-                    "short": False,
-                }]
-            }]
-        }
+        content = getattr(obj, 'content', None)
+        if content:
+            data["attachments"][0]["fields"].append({
+                "title": "Content",
+                "value": content,
+                "short": False,
+            })
     else:
-        # For stories, tasks and issues
-        description = getattr(obj, 'description', '-')
-        data = {
-            "text": template.render(context.flatten()),
-            "attachments": [{
-                "color": "danger",
-                "fields": [{
-                    "title": "Description",
-                    "value": description,
-                    "short": False,
-                }]
-            }]
-        }
+        # For stories, tasks, issues and epics
+        description = getattr(obj, 'description', None)
+        if description:
+            data["attachments"][0]["fields"].append({
+                "title": "Description",
+                "value": description,
+                "short": False})
 
     if channel:
         data["channel"] = channel
