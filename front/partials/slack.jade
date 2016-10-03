@@ -56,24 +56,25 @@ div(contrib-slack-webhooks, ng-controller="ContribSlackAdminController as ctrl")
                     span.check-text.check-yes(translate="COMMON.YES")
                     span.check-text.check-no(translate="COMMON.NO")
 
-          fieldset
-              h2 Notify Epics related user stories
-              div.check-item
-                  span Create
-                  div.check
-                      input(type="checkbox" name="notification" ng-model="slackhook.notify_relateduserstory_create")
-                      div
-                      span.check-text.check-yes(translate="COMMON.YES")
-                      span.check-text.check-no(translate="COMMON.NO")
+        fieldset
+            h2 Notify Epics related user stories
+            div.check-item
+                span Create
+                div.check
+                    input(type="checkbox" name="notification" ng-model="slackhook.notify_relateduserstory_create")
+                    div
+                    span.check-text.check-yes(translate="COMMON.YES")
+                    span.check-text.check-no(translate="COMMON.NO")
 
-              div.check-item
-                  span Delete
-                  div.check
-                      input(type="checkbox" name="notification" ng-model="slackhook.notify_relateduserstory_delete")
-                      div
-                      span.check-text.check-yes(translate="COMMON.YES")
-                      span.check-text.check-no(translate="COMMON.NO")
+            div.check-item
+                span Delete
+                div.check
+                    input(type="checkbox" name="notification" ng-model="slackhook.notify_relateduserstory_delete")
+                    div
+                    span.check-text.check-yes(translate="COMMON.YES")
+                    span.check-text.check-no(translate="COMMON.NO")
 
+        fieldset
             h2 Notify User Stories
             div.check-item
                 span Create

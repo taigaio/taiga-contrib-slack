@@ -1,5 +1,10 @@
 # Changelog #
 
+
+## 3.0.1 (2016-10-03)
+- Minor style fix.
+
+
 ## 3.0.0 (2016-10-02)
 - Compatible with Taiga 3.0.0
 
