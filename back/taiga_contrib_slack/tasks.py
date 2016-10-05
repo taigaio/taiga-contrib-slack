@@ -185,7 +185,8 @@ def _field_to_attachment(template_field, field_name, values):
             for att in values['changed']:
                 attachment['fields'].append({
                     "title": att["name"],
-                    "value": "*from* {} *to* {}".format(att["changes"]["value"][0], att["changes"]["value"][1]),
+                    "value": "*from* {} *to* {}".format(att["changes"]["value"][0],
+                                                        att["changes"]["value"][1]),
                     "short": False,
                 })
 
@@ -273,7 +274,10 @@ def change_slackhook(url, channel, notify_config, obj, change):
             if attachment:
                 data['attachments'].append(attachment)
 
-    data["username"] = "{} ({})".format(getattr(settings, "SLACKHOOKS_USERNAME", "Taiga"), change.user['name'])
+    data["username"] = "{} ({})".format(
+        getattr(settings, "SLACKHOOKS_USERNAME", "Taiga"),
+        change.user['name']
+    )
     try:
         user = User.objects.get(pk=change.user['pk'])
         data["icon_url"] = get_user_photo_url(user)
@@ -293,8 +297,9 @@ def create_slackhook(url, channel, notify_config, obj):
 
     template = loader.get_template('taiga_contrib_slack/create.jinja')
     context = Context({"obj": obj, "obj_type": obj_type})
+    create_text = template.render(context.flatten())
     data = {
-        "text": template.render(context.flatten()),
+        "text": create_text.strip(),
         "attachments": [{
             "color": "good",
             "fields": [{
@@ -327,10 +332,14 @@ def create_slackhook(url, channel, notify_config, obj):
     if channel:
         data["channel"] = channel
 
-    data["username"] = "{} ({})".format(getattr(settings, "SLACKHOOKS_USERNAME", "Taiga"), obj.owner.get_full_name())
+    data["username"] = "{} ({})".format(
+        getattr(settings, "SLACKHOOKS_USERNAME", "Taiga"),
+        obj.owner.get_full_name()
+    )
     data["icon_url"] = get_user_photo_url(obj.owner)
     if data["icon_url"] and not data["icon_url"].startswith("http"):
         data["icon_url"] = "https:{}".format(data["icon_url"])
+
     _send_request(url, data)
 
 
@@ -343,10 +352,9 @@ def delete_slackhook(url, channel, notify_config, obj, change):
 
     template = loader.get_template('taiga_contrib_slack/delete.jinja')
     context = Context({"obj": obj, "obj_type": obj_type})
-    description = getattr(obj, 'description', '-')
-
+    delete_text = template.render(context.flatten())
     data = {
-        "text": template.render(context.flatten()),
+        "text": delete_text.strip(),
         "attachments": [{
             "color": "danger",
             "fields": []
@@ -374,7 +382,10 @@ def delete_slackhook(url, channel, notify_config, obj, change):
     if channel:
         data["channel"] = channel
 
-    data["username"] = "{} ({})".format(getattr(settings, "SLACKHOOKS_USERNAME", "Taiga"), change.user['name'])
+    data["username"] = "{} ({})".format(
+        getattr(settings, "SLACKHOOKS_USERNAME", "Taiga"),
+        change.user['name']
+    )
     try:
         user = User.objects.get(pk=change.user['pk'])
         data["icon_url"] = get_user_photo_url(user)
