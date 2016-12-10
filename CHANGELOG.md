@@ -1,8 +1,8 @@
 # Changelog #
 
 
-## 3.0.1 (2016-10-05)
-- Stripe some text tooo make the plugin compatible with Mattermost..
+## 3.0.2 (2016-10-05)
+- Stripe some text to make the plugin compatible with Mattermost.
 
 
 ## 3.0.1 (2016-10-03)
