@@ -1,6 +1,10 @@
 # Changelog #
 
 
+## 3.1.0 (unreleased)
+- Compatible with Taiga 3.1.0
+
+
 ## 3.0.2 (2016-10-05)
 - Stripe some text to make the plugin compatible with Mattermost.
 
