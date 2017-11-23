@@ -79,7 +79,7 @@ class SlackAdmin
             @confirm.notify("error")
 
 
-SlackWebhooksDirective = ($repo, $confirm, $loading) ->
+SlackWebhooksDirective = ($repo, $confirm, $loading, $analytics) ->
     link = ($scope, $el, $attrs) ->
         form = $el.find("form").checksley({"onlyOneErrorElement": true})
         submit = debounce 2000, (event) =>
@@ -94,6 +94,7 @@ SlackWebhooksDirective = ($repo, $confirm, $loading) ->
             if not $scope.slackhook.id
                 promise = $repo.create("slack", $scope.slackhook)
                 promise.then (data) ->
+                    $analytics.trackEvent("slack", "create", "Create slack integration", 1)
                     $scope.slackhook = data
             else if $scope.slackhook.url
                 promise = $repo.save($scope.slackhook)
@@ -138,7 +139,7 @@ SlackWebhooksDirective = ($repo, $confirm, $loading) ->
 module = angular.module('taigaContrib.slack', [])
 
 module.controller("ContribSlackAdminController", SlackAdmin)
-module.directive("contribSlackWebhooks", ["$tgRepo", "$tgConfirm", "$tgLoading", SlackWebhooksDirective])
+module.directive("contribSlackWebhooks", ["$tgRepo", "$tgConfirm", "$tgLoading", "$tgAnalytics", SlackWebhooksDirective])
 
 initSlackPlugin = ($tgUrls) ->
     $tgUrls.update({
