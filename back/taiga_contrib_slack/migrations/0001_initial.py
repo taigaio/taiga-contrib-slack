@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('url', models.URLField(verbose_name='URL')),
-                ('project', models.ForeignKey(to='projects.Project', related_name='slackhooks')),
+                ('project', models.ForeignKey(to='projects.Project', related_name='slackhooks', on_delete=models.CASCADE)),
             ],
             options={
             },
