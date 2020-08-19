@@ -20,8 +20,13 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class SlackHook(models.Model):
-    project = models.ForeignKey("projects.Project", null=False, blank=False,
-                                related_name="slackhooks")
+    project = models.ForeignKey(
+        "projects.Project",
+        null=False,
+        blank=False,
+        related_name="slackhooks",
+        on_delete=models.CASCADE,
+    )
     url = models.URLField(null=False, blank=False, verbose_name=_("URL"))
     channel = models.CharField(null=True, blank=True, verbose_name=_("Channel"), max_length=200)
 
