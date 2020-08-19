@@ -216,12 +216,14 @@ def _field_to_attachment(template_field, field_name, values):
     return attachment
 
 
-def _link_transform(match):
-    url_split = match.group(8).split()
-    try:
-        return "{} ({})".format(match.group(1), url_split[0])
-    except IndexError:
-        return "{}".format(match.group(1))
+def _link_transform(match):    
+    if len(match.groups()) > 8:
+        url_split = match.group(8).split()
+        try:        
+            return "{} ({})".format(match.group(1), url_split[0])
+        except IndexError:
+            return "{}".format(match.group(1))
+    return match.group(0)
 
 
 def _check_notify_permission(notify_config, obj_type, action):
