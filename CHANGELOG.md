@@ -1,5 +1,9 @@
 # Changelog #
 
+## 5.5.1 (2020-09-21)
+
+- Release package to PyPI.
+
 ## 5.5.0 (2020-08-19)
 
 - Fix bug (thankyou @danielmorlock).
