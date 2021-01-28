@@ -1,5 +1,9 @@
 # Changelog #
 
+## 6.0.0
+
+Compatible with Taiga 6.0.0
+
 ## 5.5.1 (2020-09-21)
 
 - Release package to PyPI.
