@@ -180,7 +180,11 @@ div(contrib-slack-webhooks, ng-controller="ContribSlackAdminController as ctrl")
 
 
         button(type="submit", class="hidden")
-        a.button-green.submit-button(href="", title="Save", ng-click="ctrl.updateOrCreateHook(slackhook)")
+        a.btn-small.submit-button(
+            variant="primary"
+            href="", title="Save",
+            ng-click="ctrl.updateOrCreateHook(slackhook)"
+        )
             span Save
 
     a.help-button(
