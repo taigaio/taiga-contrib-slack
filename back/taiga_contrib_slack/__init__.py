@@ -15,6 +15,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-__version__ = (5, 5, 1)
+__version__ = (6, 0, 0)
 
 default_app_config = "taiga_contrib_slack.apps.TaigaContribSlackAppConfig"
