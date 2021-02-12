@@ -1,10 +1,14 @@
 # Changelog #
 
-## 6.0.2 (unreleased)
+## 6.0.3 (unreleased)
 
 - ...
 
-## 6.0.1 (2021-02-15)
+## 6.0.2 (2021-02-15)
+
+- Minor style fixes
+
+## 6.0.1 (2021-02-08)
 
 - Minor style fixes
 
