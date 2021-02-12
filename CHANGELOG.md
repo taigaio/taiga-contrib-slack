@@ -1,8 +1,16 @@
 # Changelog #
 
-## 6.0.0
+## 6.0.2 (unreleased)
 
-Compatible with Taiga 6.0.0
+- ...
+
+## 6.0.1 (2021-02-15)
+
+- Minor style fixes
+
+## 6.0.0 (2021-02-02)
+
+- Compatible with Taiga 6.0.0
 
 ## 5.5.1 (2020-09-21)
 
