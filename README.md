@@ -10,21 +10,33 @@ The Taiga plugin for slack integration.
 
 ## Production env
 
-### Taiga Back
+Define a variable with the latest repository release, for instance:
 
-In your Taiga back python virtualenv install the pip package `taiga-contrib-slack` with:
-
-```bash
-  pip install taiga-contrib-slack
+```
+export TAIGA_CONTRIB_SLACK_TAG=6.0.2
 ```
 
-Modify in `taiga-back` your `settings/local.py` and include the line:
+### Taiga Back
+
+Load the python virtualenv from your Taiga back directory: 
+
+```bash
+source .venv/bin/activate
+```
+
+And install the package `taiga-contrib-slack` with:
+
+```bash
+  (taiga-back) pip install "git+https://github.com/taigaio/taiga-contrib-slack.git@${TAIGA_CONTRIB_SLACK_TAG}#egg=taiga-contrib-slack&subdirectory=back"
+```
+
+Modify in `taiga-back` your `settings/config.py` and include the line:
 
 ```python
   INSTALLED_APPS += ["taiga_contrib_slack"]
 ```
 
-Then run the migrations to generate the new need table:
+Then run the migrations to generate the required new table:
 
 ```bash
   python manage.py migrate taiga_contrib_slack
@@ -38,7 +50,7 @@ Download in your `dist/plugins/` directory of Taiga front the `taiga-contrib-sla
   cd dist/
   mkdir -p plugins
   cd plugins
-  svn export "https://github.com/taigaio/taiga-contrib-slack/tags/$(pip show taiga-contrib-slack | awk '/^Version: /{print $2}')/front/dist" "slack"
+  svn export "https://github.com/taigaio/taiga-contrib-slack/tags/${TAIGA_CONTRIB_SLACK_TAG}/front/dist"  "slack"
 ```
 
 Include in your `dist/conf.json` in the `contribPlugins` list the value `"/plugins/slack/slack.json"`:
@@ -53,6 +65,8 @@ Include in your `dist/conf.json` in the `contribPlugins` list the value `"/plugi
 ```
 
 ## Dev env
+
+This configuration should be used only if you're developing this library.
 
 ### Taiga Back
 
