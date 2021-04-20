@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/taigaio/taiga-contrib-slack"
+    "url": "https://github.com/kaleidos-ventures/taiga-contrib-slack"
   },
   "keywords": [
     "slack",
@@ -15,9 +15,9 @@
   "author": "Jesús Espino <jesus.espino@kaleidos.net>",
   "license": "MPL-2",
   "bugs": {
-    "url": "https://github.com/taigaio/taiga-contrib-slack/issues"
+    "url": "https://github.com/kaleidos-ventures/taiga-contrib-slack/issues"
   },
-  "homepage": "https://github.com/taigaio/taiga-contrib-slack",
+  "homepage": "https://github.com/kaleidos-ventures/taiga-contrib-slack",
   "dependencies": {
     "coffee-script": "^1.8.0",
     "jade": "^1.9.1"
