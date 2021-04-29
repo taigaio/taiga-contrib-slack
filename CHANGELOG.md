@@ -1,9 +1,8 @@
 # Changelog #
 
-## 6.0.3 (unreleased)
+## 6.0.10 (unreleased)
 
-- ...
-
+Update github templates
 ## 6.0.2 (2021-02-15)
 
 - Minor style fixes
