@@ -5,6 +5,6 @@
 #
 # Copyright (c) 2021-present Kaleidos Ventures SL
 
-__version__ = (6, 0, 2)
+__version__ = (6, 1, 0)
 
 default_app_config = "taiga_contrib_slack.apps.TaigaContribSlackAppConfig"
