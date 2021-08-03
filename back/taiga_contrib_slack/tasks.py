@@ -206,10 +206,10 @@ def _field_to_attachment(template_field, field_name, values):
     return attachment
 
 
-def _link_transform(match):    
+def _link_transform(match):
     if len(match.groups()) > 8:
         url_split = match.group(8).split()
-        try:        
+        try:
             return "{} ({})".format(match.group(1), url_split[0])
         except IndexError:
             return "{}".format(match.group(1))
