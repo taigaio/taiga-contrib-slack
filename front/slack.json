@@ -5,5 +5,5 @@
     "type": "admin",
     "module": "taigaContrib.slack",
     "template": "/plugins/slack/slack.html",
-    "js": "/plugins/slack/slack.js"
+    "js": "plugins/slack/slack.js"
 }

@@ -17,7 +17,7 @@ export TAIGA_CONTRIB_SLACK_TAG=6.0.2
 
 ### Taiga Back
 
-Load the python virtualenv from your Taiga back directory: 
+Load the python virtualenv from your Taiga back directory:
 
 ```bash
 source .venv/bin/activate
@@ -52,13 +52,13 @@ Download in your `dist/plugins/` directory of Taiga front the `taiga-contrib-sla
   svn export "https://github.com/kaleidos-ventures/taiga-contrib-slack/tags/${TAIGA_CONTRIB_SLACK_TAG}/front/dist"  "slack"
 ```
 
-Include in your `dist/conf.json` in the `contribPlugins` list the value `"/plugins/slack/slack.json"`:
+Include in your `dist/conf.json` in the `contribPlugins` list the value `"plugins/slack/slack.json"`:
 
 ```json
 ...
     "contribPlugins": [
         (...)
-        "/plugins/slack/slack.json"
+        "plugins/slack/slack.json"
     ]
 ...
 ```
@@ -100,13 +100,13 @@ After clone the repo link `dist` in `taiga-front` plugins directory:
   ln -s ../../../taiga-Contrib-slack/front/dist slack
 ```
 
-Include in your `dist/conf.json` in the `contribPlugins` list the value `"/plugins/slack/slack.json"`:
+Include in your `dist/conf.json` in the `contribPlugins` list the value `"plugins/slack/slack.json"`:
 
 ```json
 ...
     "contribPlugins": [
         (...)
-        "/plugins/slack/slack.json"
+        "plugins/slack/slack.json"
     ]
 ...
 ```
