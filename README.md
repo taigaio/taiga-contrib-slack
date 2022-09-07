@@ -1,5 +1,4 @@
-Taiga contrib slack
-===================
+# Taiga contrib slack
 
 &gt; **READ THIS FIRST!**: We recently announced Taiga plans for the future and they greatly affect how we manage this repository and the current Taiga 6 release. Check it [here](https://blog.taiga.io/announcing_taiganext.html).chore: readme announce taiga-next
 
@@ -118,11 +117,11 @@ In the plugin source dir `taiga-contrib-slack/front` run
 ```bash
 npm install
 ```
+
 and use:
 
 - `gulp` to regenerate the source and watch for changes.
 - `gulp build` to only regenerate the source.
-
 
 ## How to use
 
@@ -134,7 +133,7 @@ Currently, we have authored three main documentation hubs:
 
 - **[API](https://docs.taiga.io/api.html)**: Our API documentation and reference for developing from Taiga API.
 - **[Documentation](https://docs.taiga.io/)**: If you need to install Taiga on your own server, this is the place to find some guides.
-- **[Taiga Resources](https://resources.taiga.io)**: This page is intended to be the support reference page for the users.
+- **[Taiga Community](https://community.taiga.io/)**: This page is intended to be the support reference page for the users.
 
 ## Bug reports
 
@@ -157,7 +156,7 @@ If you want to be up to date about announcements of releases, important changes 
 
 ## Contribute to Taiga
 
-There are many different ways to contribute to Taiga's platform, from patches, to documentation and UI enhancements, just find the one that best fits with your skills. Check out our detailed [contribution guide](https://resources.taiga.io/extend/how-can-i-contribute/)
+There are many different ways to contribute to Taiga's platform, from patches, to documentation and UI enhancements, just find the one that best fits with your skills. Check out our detailed [contribution guide](https://community.taiga.io/t/how-can-i-contribute/159#code-patches-enhacements-3).
 
 ## Code of Conduct
 
