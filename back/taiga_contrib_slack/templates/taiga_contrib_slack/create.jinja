@@ -10,7 +10,7 @@ Copyright (c) 2021-present Kaleidos Ventures SL
     {% set final_url = resolve_front_url("epic", obj.project.slug, obj.ref) %}
     {{ _("New Epic created: ") }} *<{{final_url}}|#{{obj.ref}}: {{obj.subject|safe}}>*
 {% elif obj_type == "relateduserstory" %}
-    {% set userstory_url = resolve_front_url("userstory", obj.project.slug, obj.user_story.ref) %}
+    {% set userstory_url = resolve_front_url("userstory", obj.user_story.project.slug, obj.user_story.ref) %}
     {% set epic_url = resolve_front_url("epic", obj.project.slug, obj.epic.ref) %}
     {{ _("New user story related: ") }} *<{{userstory_url}}|#{{obj.user_story.ref}}: {{obj.user_story.subject|safe}}>* in the epic *<{{epic_url}}|#{{obj.epic.ref}}: {{obj.epic.subject|safe}}>*
 {% elif obj_type == "issue" %}
