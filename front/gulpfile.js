@@ -28,7 +28,7 @@ gulp.task('compile', function () {
     .pipe($.jade({ pretty: true }))
     .pipe($.angularTemplatecache({
       transformUrl: function (url) {
-        return '/plugins/slack/' + url;
+        return '/plugins/slack' + url;
       }
     }))
     .pipe($.remember('jade'));
