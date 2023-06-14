@@ -18,10 +18,11 @@ class SlackAdmin
         "tgAppMetaService",
         "$tgConfirm",
         "$tgHttp",
-        "tgProjectService"
+        "tgProjectService",
+        "$translate"
     ]
 
-    constructor: (@rootScope, @scope, @repo, @appMetaService, @confirm, @http, @projectService) ->
+    constructor: (@rootScope, @scope, @repo, @appMetaService, @confirm, @http, @projectService, @translate) ->
         @scope.sectionName = "Slack" # i18n
         @scope.sectionSlug = "slack"
 
@@ -49,7 +50,10 @@ class SlackAdmin
             if slackhooks.length > 0
                 @scope.slackhook = slackhooks[0]
 
-            title = "#{@scope.sectionName} - Plugins - #{@scope.project.name}" # i18n
+            title = @translate.instant("ADMIN.PLUGINS.PAGE_TITLE", {
+                projectName: @scope.project.title,
+                pluginName: "Slack",
+            })
             description = @scope.project.description
             @appMetaService.setAll(title, description)
 
