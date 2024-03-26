@@ -17,7 +17,7 @@ setup(
     keywords = 'taiga, slack, integration',
     author = 'Jesús Espino García',
     author_email = 'jesus.espino@kaleidos.net',
-    url = 'https://github.com/kaleidos-ventures/taiga-contrib-slack',
+    url = 'https://github.com/taigaio/taiga-contrib-slack',
     license = 'MPL-2',
     include_package_data = True,
     packages = find_packages(),
